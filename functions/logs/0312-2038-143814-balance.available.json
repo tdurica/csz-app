@@ -1,0 +1,37 @@
+{
+  "id": "evt_1MkzOwD1nNXXpxulRfpQ9HRm",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678667890,
+  "data": {
+    "object": {
+      "object": "balance",
+      "available": [
+        {
+          "amount": 0,
+          "currency": "usd",
+          "source_types": {
+            "card": 0
+          }
+        }
+      ],
+      "livemode": false,
+      "pending": [
+        {
+          "amount": 8698,
+          "currency": "usd",
+          "source_types": {
+            "card": 8698
+          }
+        }
+      ]
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "balance.available"
+}

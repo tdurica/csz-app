@@ -1,0 +1,92 @@
+{
+  "id": "evt_1MlNztD1nNXXpxul49QK1HYI",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678762435,
+  "data": {
+    "object": {
+      "id": "ii_1MlNteD1nNXXpxulsZYFlvoi",
+      "object": "invoiceitem",
+      "amount": 3999,
+      "currency": "usd",
+      "customer": "cus_NWQYgkPQ0Sxy3t",
+      "date": 1678816800,
+      "description": "Remaining time on Premium Subscription after 14 Mar 2023",
+      "discountable": false,
+      "discounts": [],
+      "invoice": "in_1MlNzrD1nNXXpxulORcVnQff",
+      "livemode": false,
+      "metadata": {},
+      "period": {
+        "end": 1681495200,
+        "start": 1678816800
+      },
+      "plan": {
+        "id": "price_1MRALPD1nNXXpxulIVWwszk9",
+        "object": "plan",
+        "active": true,
+        "aggregate_usage": null,
+        "amount": 3999,
+        "amount_decimal": "3999",
+        "billing_scheme": "per_unit",
+        "created": 1673943395,
+        "currency": "usd",
+        "interval": "month",
+        "interval_count": 1,
+        "livemode": false,
+        "metadata": {},
+        "nickname": null,
+        "product": "prod_NBXQq5XpkJzHkQ",
+        "tiers_mode": null,
+        "transform_usage": null,
+        "trial_period_days": null,
+        "usage_type": "licensed"
+      },
+      "price": {
+        "id": "price_1MRALPD1nNXXpxulIVWwszk9",
+        "object": "price",
+        "active": true,
+        "billing_scheme": "per_unit",
+        "created": 1673943395,
+        "currency": "usd",
+        "custom_unit_amount": null,
+        "livemode": false,
+        "lookup_key": "premium",
+        "metadata": {},
+        "nickname": null,
+        "product": "prod_NBXQq5XpkJzHkQ",
+        "recurring": {
+          "aggregate_usage": null,
+          "interval": "month",
+          "interval_count": 1,
+          "trial_period_days": null,
+          "usage_type": "licensed"
+        },
+        "tax_behavior": "inclusive",
+        "tiers_mode": null,
+        "transform_quantity": null,
+        "type": "recurring",
+        "unit_amount": 3999,
+        "unit_amount_decimal": "3999"
+      },
+      "proration": true,
+      "quantity": 1,
+      "subscription": "sub_1MlNsGD1nNXXpxul8GzDUqJR",
+      "subscription_item": "si_NWQjFk6kOVK9Gr",
+      "tax_rates": [],
+      "test_clock": "clock_1MlNgCD1nNXXpxulhlXR4YiI",
+      "unit_amount": 3999,
+      "unit_amount_decimal": "3999"
+    },
+    "previous_attributes": {
+      "invoice": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "invoiceitem.updated"
+}

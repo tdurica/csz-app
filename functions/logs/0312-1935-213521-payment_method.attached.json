@@ -1,0 +1,62 @@
+{
+  "id": "evt_1MkyQ9D1nNXXpxulFBQc5edF",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678664121,
+  "data": {
+    "object": {
+      "id": "pm_1MkyQ9D1nNXXpxulW0x3Lkx2",
+      "object": "payment_method",
+      "billing_details": {
+        "address": {
+          "city": null,
+          "country": "US",
+          "line1": null,
+          "line2": null,
+          "postal_code": "22222",
+          "state": null
+        },
+        "email": null,
+        "name": null,
+        "phone": null
+      },
+      "card": {
+        "brand": "visa",
+        "checks": {
+          "address_line1_check": null,
+          "address_postal_code_check": "pass",
+          "cvc_check": "pass"
+        },
+        "country": "US",
+        "exp_month": 1,
+        "exp_year": 2024,
+        "fingerprint": "qakJAOhkG7UQ21nY",
+        "funding": "credit",
+        "generated_from": null,
+        "last4": "0341",
+        "networks": {
+          "available": [
+            "visa"
+          ],
+          "preferred": null
+        },
+        "three_d_secure_usage": {
+          "supported": true
+        },
+        "wallet": null
+      },
+      "created": 1678664121,
+      "customer": "cus_NVqChN0NDpMZns",
+      "livemode": false,
+      "metadata": {},
+      "type": "card"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_fdyw3KnXi4i1jK",
+    "idempotency_key": "f81fca8a-aa7d-4026-8758-ea60459c6705"
+  },
+  "type": "payment_method.attached"
+}

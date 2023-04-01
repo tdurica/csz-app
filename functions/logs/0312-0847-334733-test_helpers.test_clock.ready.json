@@ -1,0 +1,25 @@
+{
+  "id": "evt_1MkoGyD1nNXXpxulh3HoXcWI",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678625112,
+  "data": {
+    "object": {
+      "id": "clock_1MkVf2D1nNXXpxulX1clSWeB",
+      "object": "test_helpers.test_clock",
+      "created": 1678553568,
+      "deletes_after": 1681145568,
+      "frozen_time": 1680620760,
+      "livemode": false,
+      "name": "subscrtestclock",
+      "status": "ready"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "test_helpers.test_clock.ready"
+}

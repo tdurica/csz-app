@@ -1,0 +1,73 @@
+import {Box, ChakraProvider, Flex, Grid, Image, Portal, Stack, useDisclosure, useStyleConfig} from '@chakra-ui/react';
+// import Configurator from "views/app/Configurator.js";
+import AppFooter from "views/navs/AppFooter.js";
+// Layout components
+import AppNav from "views/navs/AppNav.js";
+import AppSidebar from "views/navs/AppSidebar.js";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {NavLink, Outlet, useLocation, useRouteMatch} from 'react-router-dom';
+// Custom Chakra theme
+// import theme from "theme/theme.js";
+// Custom components
+// import { appNavDrawerOpenAtom, signatureAtom, w3rLibraryAtom } from './services/atoms.js';
+import { useDeviceMode } from '../theme/foundations/breakpoints.js';
+import { desktopSidebarWidth } from 'data/constants.js';
+import { useMutationObservable } from '../hooks/useMutationObservable.js';
+import BrandLogoSvg from "../assets/logos/brand-logo.svg";
+import {SBNavLink} from "./navs/SBNavLink";
+import {HFlexSC} from "./bits/UtilityTags";
+
+function scrollbarVisible(element) {
+  return element.scrollHeight > element.clientHeight;
+}
+export default function LayoutApp(props) {
+  const { variant, children, ...rest } = props;
+
+  const [scrollVis, setScrollVis] = useState('0');
+  const appMainRef = useRef(null);
+  const onAppMainMutation = useCallback((mutationList) => {
+    if(scrollbarVisible(appMainRef.current)){setScrollVis('1');
+    }else{setScrollVis('0');}}, [setScrollVis]);
+  useMutationObservable(appMainRef.current, onAppMainMutation);
+
+  document.documentElement.dir = "ltr";
+  // Chakra Color Mode
+  const [isMobile, isDesktop] = useDeviceMode()
+
+  // const route = useRoutes()
+  return (
+    <>
+      <AppSidebar/>
+
+      <Box id='AppMain' ref={appMainRef}
+           sx={{
+             height: '100%',
+             overflowY: "scroll",
+             overflowX: "hidden",
+             marginLeft:isDesktop?desktopSidebarWidth:'0',
+             paddingRight:isDesktop?'10px':'1px',
+             paddingTop:'60px',
+             display: 'flex',
+             flexDirection: 'column',
+             flexBasis: '100vh',
+             backgroundColor: `#F9F9FA`,//brand.bg
+             // backgroundColor: `rgba(17,22,35,${scrollVis})`,//brand.bg
+             justifyContent: 'begin',
+             "&::-webkit-scrollbar": {
+               width: "6px",
+               backgroundColor: 'inherit',
+             },
+             "&::-webkit-scrollbar-track": {
+               width: "2px",
+               backgroundColor: 'inherit',
+             },
+             "&::-webkit-scrollbar-thumb": {
+               background: "blue.700",
+               borderRadius: "24px",
+             },
+           }}>
+          <Outlet/>
+      </Box>
+    </>
+  );
+}

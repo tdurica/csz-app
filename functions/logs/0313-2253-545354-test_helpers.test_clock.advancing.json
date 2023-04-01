@@ -1,0 +1,25 @@
+{
+  "id": "evt_1MlNzqD1nNXXpxulyN32fGcA",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678762434,
+  "data": {
+    "object": {
+      "id": "clock_1MlNgCD1nNXXpxulhlXR4YiI",
+      "object": "test_helpers.test_clock",
+      "created": 1678761216,
+      "deletes_after": 1681353216,
+      "frozen_time": 1678816800,
+      "livemode": false,
+      "name": "newsimsubscrblahblah",
+      "status": "advancing"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_11Sr1FhikZLUNu",
+    "idempotency_key": "abd607de-c450-4e5e-8f2d-892515254c98"
+  },
+  "type": "test_helpers.test_clock.advancing"
+}

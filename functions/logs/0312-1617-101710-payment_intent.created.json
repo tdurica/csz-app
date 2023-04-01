@@ -1,0 +1,71 @@
+{
+  "id": "evt_3MkvKLD1nNXXpxul1gcTie9q",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678652229,
+  "data": {
+    "object": {
+      "id": "pi_3MkvKLD1nNXXpxul16HpJJBq",
+      "object": "payment_intent",
+      "amount": 2999,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {}
+      },
+      "amount_received": 0,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic",
+      "client_secret": "pi_3MkvKLD1nNXXpxul16HpJJBq_secret_osOE4LO2GGW3rTnrcjfCG3wLK",
+      "confirmation_method": "automatic",
+      "created": 1678652229,
+      "currency": "usd",
+      "customer": "cus_NVqChN0NDpMZns",
+      "description": "Subscription creation",
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": null,
+      "livemode": false,
+      "metadata": {},
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        },
+        "us_bank_account": {
+          "verification_method": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card",
+        "us_bank_account"
+      ],
+      "processing": null,
+      "receipt_email": "td8090@gmail.com",
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": null,
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "requires_payment_method",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_EFePNOvHGgLDee",
+    "idempotency_key": "d16d5423-2c61-45c9-8b27-b47d65570251"
+  },
+  "type": "payment_intent.created"
+}

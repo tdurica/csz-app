@@ -1,0 +1,40 @@
+{
+  "id": "evt_1MkbMUD1nNXXpxul5lHeex3B",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678575482,
+  "data": {
+    "object": {
+      "id": "card_1MkbMTD1nNXXpxulZyomre5H",
+      "object": "card",
+      "address_city": null,
+      "address_country": null,
+      "address_line1": null,
+      "address_line1_check": null,
+      "address_line2": null,
+      "address_state": null,
+      "address_zip": null,
+      "address_zip_check": null,
+      "brand": "Visa",
+      "country": "US",
+      "customer": "cus_NVcSTdnOfB3Wjo",
+      "cvc_check": "pass",
+      "dynamic_last4": null,
+      "exp_month": 1,
+      "exp_year": 2024,
+      "fingerprint": "CGehHVeb6Nc939Co",
+      "funding": "credit",
+      "last4": "4242",
+      "metadata": {},
+      "name": null,
+      "tokenization_method": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": {
+    "id": "req_pwWDUOLbGoymPO",
+    "idempotency_key": "03f3946b-dc3f-48f7-80ca-e3e112abf391"
+  },
+  "type": "customer.source.created"
+}

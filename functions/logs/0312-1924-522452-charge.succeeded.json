@@ -1,0 +1,103 @@
+{
+  "id": "evt_3MkyFyD1nNXXpxul0q0DSW2Y",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678663491,
+  "data": {
+    "object": {
+      "id": "ch_3MkyFyD1nNXXpxul0AG3NSkt",
+      "object": "charge",
+      "amount": 2999,
+      "amount_captured": 2999,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": "txn_3MkyFyD1nNXXpxul0zjhOb2e",
+      "billing_details": {
+        "address": {
+          "city": null,
+          "country": "US",
+          "line1": null,
+          "line2": null,
+          "postal_code": "22222",
+          "state": null
+        },
+        "email": null,
+        "name": null,
+        "phone": null
+      },
+      "calculated_statement_descriptor": "MOONCOSYSTEMS",
+      "captured": true,
+      "created": 1678663491,
+      "currency": "usd",
+      "customer": "cus_NVqChN0NDpMZns",
+      "description": "Subscription creation",
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {},
+      "invoice": "in_1MkyFyD1nNXXpxulRURNOZ3Z",
+      "livemode": false,
+      "metadata": {},
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 7,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3MkyFyD1nNXXpxul0wYdtnKV",
+      "payment_method": "pm_1Mkxh2D1nNXXpxuljlh24AhS",
+      "payment_method_details": {
+        "card": {
+          "brand": "visa",
+          "checks": {
+            "address_line1_check": null,
+            "address_postal_code_check": "pass",
+            "cvc_check": null
+          },
+          "country": "US",
+          "exp_month": 1,
+          "exp_year": 2024,
+          "fingerprint": "CGehHVeb6Nc939Co",
+          "funding": "credit",
+          "installments": null,
+          "last4": "4242",
+          "mandate": null,
+          "network": "visa",
+          "three_d_secure": null,
+          "wallet": null
+        },
+        "type": "card"
+      },
+      "receipt_email": "mooncodev@gmail.com",
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/invoices/CAcaFwoVYWNjdF8xTVFJVG9EMW5OWFhweHVsKMS-uaAGMgYe9CgqMi86LBY5mNNjPcRgZAbivr2trcvtmI0aJ-RpPlpPDiK0-cs5vUTa4qoFa1cvCkJT?s=ap",
+      "refunded": false,
+      "review": null,
+      "shipping": null,
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_ibI2il7mbLZRrh",
+    "idempotency_key": "d1dff56e-1c10-4258-ae48-43337b6226d2"
+  },
+  "type": "charge.succeeded"
+}

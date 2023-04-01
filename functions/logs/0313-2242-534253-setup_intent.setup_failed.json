@@ -1,0 +1,104 @@
+{
+  "id": "evt_1MlNpBD1nNXXpxulaEGXkMZ1",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678761773,
+  "data": {
+    "object": {
+      "id": "seti_1MlNocD1nNXXpxulw7u0Qhan",
+      "object": "setup_intent",
+      "application": null,
+      "cancellation_reason": null,
+      "client_secret": "seti_1MlNocD1nNXXpxulw7u0Qhan_secret_NWQfV3K8aSYoi3iZjxINcNEKPJUQ7jY",
+      "created": 1678761738,
+      "customer": "cus_NWQYgkPQ0Sxy3t",
+      "description": null,
+      "flow_directions": null,
+      "last_setup_error": {
+        "code": "card_declined",
+        "decline_code": "insufficient_funds",
+        "doc_url": "https://stripe.com/docs/error-codes/card-declined",
+        "message": "Your card has insufficient funds.",
+        "payment_method": {
+          "id": "pm_1MlNpAD1nNXXpxulQvo3c5e7",
+          "object": "payment_method",
+          "billing_details": {
+            "address": {
+              "city": null,
+              "country": "US",
+              "line1": null,
+              "line2": null,
+              "postal_code": "22222",
+              "state": null
+            },
+            "email": null,
+            "name": null,
+            "phone": null
+          },
+          "card": {
+            "brand": "visa",
+            "checks": {
+              "address_line1_check": null,
+              "address_postal_code_check": "pass",
+              "cvc_check": "pass"
+            },
+            "country": "US",
+            "exp_month": 1,
+            "exp_year": 2024,
+            "fingerprint": "Hq2Z3URjr7eeNzOq",
+            "funding": "credit",
+            "generated_from": null,
+            "last4": "9995",
+            "networks": {
+              "available": [
+                "visa"
+              ],
+              "preferred": null
+            },
+            "three_d_secure_usage": {
+              "supported": true
+            },
+            "wallet": null
+          },
+          "created": 1678761772,
+          "customer": null,
+          "livemode": false,
+          "metadata": {},
+          "type": "card"
+        },
+        "type": "card_error"
+      },
+      "latest_attempt": "setatt_1MlNpAD1nNXXpxulRYILW9uz",
+      "livemode": false,
+      "mandate": null,
+      "metadata": {},
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": null,
+      "payment_method_options": {
+        "card": {
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        },
+        "us_bank_account": {
+          "verification_method": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card",
+        "us_bank_account"
+      ],
+      "single_use_mandate": null,
+      "status": "requires_payment_method",
+      "usage": "off_session"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_toVTSZl1xD2sfK",
+    "idempotency_key": "6520d238-67cc-4b13-8543-d9025e4a8753"
+  },
+  "type": "setup_intent.setup_failed"
+}

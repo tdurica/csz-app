@@ -1,0 +1,71 @@
+{
+  "id": "evt_3MUdmpD1nNXXpxul1DvZQVzs",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1674771592,
+  "data": {
+    "object": {
+      "id": "pi_3MUdmpD1nNXXpxul12WoG6nY",
+      "object": "payment_intent",
+      "amount": 3999,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {}
+      },
+      "amount_received": 3999,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic",
+      "client_secret": "pi_3MUdmpD1nNXXpxul12WoG6nY_secret_xkM0me3KZr6xuQVat7PPvxiPd",
+      "confirmation_method": "automatic",
+      "created": 1674771555,
+      "currency": "usd",
+      "customer": "cus_NEVap82sQScdLo",
+      "description": "Subscription creation",
+      "invoice": "in_1MUdmoD1nNXXpxulx4Y1kvR0",
+      "last_payment_error": null,
+      "latest_charge": "ch_3MUdmpD1nNXXpxul14d55MvX",
+      "livemode": false,
+      "metadata": {},
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": "pm_1MUdnPD1nNXXpxul1ivaytWl",
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        },
+        "us_bank_account": {
+          "verification_method": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card",
+        "us_bank_account"
+      ],
+      "processing": null,
+      "receipt_email": "mooncodev@gmail.com",
+      "review": null,
+      "setup_future_usage": "off_session",
+      "shipping": null,
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_8Ip5JX8VLlAAZs",
+    "idempotency_key": "c43d61d6-78c2-422d-b95c-9a379e6b6790"
+  },
+  "type": "payment_intent.succeeded"
+}

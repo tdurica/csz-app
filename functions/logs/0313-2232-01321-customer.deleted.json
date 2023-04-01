@@ -1,0 +1,64 @@
+{
+  "id": "evt_1MlNeZD1nNXXpxulzHE39Aas",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1678761115,
+  "data": {
+    "object": {
+      "id": "cus_NVqChN0NDpMZns",
+      "object": "customer",
+      "address": {
+        "city": "Whitesburg",
+        "country": "US",
+        "line1": "91 Easy Street",
+        "line2": "",
+        "postal_code": "41858",
+        "state": "KY"
+      },
+      "balance": 0,
+      "created": 1680620820,
+      "currency": "usd",
+      "default_source": null,
+      "delinquent": false,
+      "description": null,
+      "discount": null,
+      "email": "mooncodev@gmail.com",
+      "invoice_prefix": "MCO111",
+      "invoice_settings": {
+        "custom_fields": null,
+        "default_payment_method": "pm_1MkzhvD1nNXXpxulV594i28B",
+        "footer": null,
+        "rendering_options": null
+      },
+      "livemode": false,
+      "metadata": {},
+      "name": "Todd A Durica",
+      "next_invoice_sequence": 3,
+      "phone": "+17044914408",
+      "preferred_locales": [
+        "en-US"
+      ],
+      "shipping": {
+        "address": {
+          "city": "Whitesburg",
+          "country": "US",
+          "line1": "91 Easy Street",
+          "line2": "",
+          "postal_code": "41858",
+          "state": "KY"
+        },
+        "name": "Todd A Durica",
+        "phone": "+17044914408"
+      },
+      "tax_exempt": "none",
+      "test_clock": "clock_1MkVf2D1nNXXpxulX1clSWeB"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_R5VoMnAXVkG0vv",
+    "idempotency_key": "batchapi-batch_1MlNeFD1nNXXpxul8vdzwbyZ-cus_NVqChN0NDpMZns_delete_customer"
+  },
+  "type": "customer.deleted"
+}

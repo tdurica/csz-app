@@ -1,0 +1,47 @@
+{
+  "id": "evt_1MUxD1D1nNXXpxulfaxHgtsr",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1674846215,
+  "data": {
+    "object": {
+      "id": "cus_NEVap82sQScdLo",
+      "object": "customer",
+      "address": null,
+      "balance": 0,
+      "created": 1674628478,
+      "currency": "usd",
+      "default_source": null,
+      "delinquent": true,
+      "description": null,
+      "discount": null,
+      "email": "mooncodev@gmail.com",
+      "invoice_prefix": "9C7794C2",
+      "invoice_settings": {
+        "custom_fields": null,
+        "default_payment_method": null,
+        "footer": null,
+        "rendering_options": null
+      },
+      "livemode": false,
+      "metadata": {},
+      "name": null,
+      "next_invoice_sequence": 11,
+      "phone": null,
+      "preferred_locales": [],
+      "shipping": null,
+      "tax_exempt": "none",
+      "test_clock": null
+    },
+    "previous_attributes": {
+      "delinquent": false
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": "req_6bnJZn03dodSYp",
+    "idempotency_key": "c8133665-d460-4b68-9d39-c7c7d7ff835c"
+  },
+  "type": "customer.updated"
+}

@@ -3,10 +3,11 @@ import { Box, Center, CircularProgress, Icon, useColorModeValue } from '@chakra-
 import { useDropzone } from 'react-dropzone';
 import { AiFillFileAdd } from 'react-icons/ai';
 import axios from 'axios';
-import { TextXs } from '../../views/bits/UtilityTags.js';
+import { BtnXs, TextXs, VFlex } from '../../views/bits/UtilityTags.js';
 import { animatePct } from './FileUploadControl.js';
+import { serverOrigin } from '../../data/constants.js';
 
-export default function S3Img ({ suid, filename, ...rest }){
+export default function S3Img ({ suid, filename, onRemove=false, ...rest }){
   const [file, setFile] = useState({});
   const [imageDataUrl, setImageDataUrl] = useState('');
   const [progressDisplay, setProgressDisplay] = useState('none');
@@ -19,7 +20,7 @@ export default function S3Img ({ suid, filename, ...rest }){
     setErrDisplay('none');
     let duration = 2;
     animatePct(duration,(v)=>setProgressPct(v));
-    const res = await axios.get(`http://localhost:4000/tools/${suid}/${filename}`,
+    const res = await axios.get(`${serverOrigin}/tools/${suid}/${filename}`,
       { responseType: 'json' }
     )
     if(res && res.data && res.data.error == null) {
@@ -44,7 +45,7 @@ export default function S3Img ({ suid, filename, ...rest }){
       color='blue.300'
     />
     <div style={sxThumb}>
-      <div style={sxThumbInner}>
+      <VFlex style={sxThumbInner}>
         <img
           alt={'thumb'}
           src={imageDataUrl}
@@ -52,7 +53,8 @@ export default function S3Img ({ suid, filename, ...rest }){
           // Revoke data uri after image is loaded
           onLoad={() => { }}
         />
-      </div>
+        {onRemove && (<BtnXs onClick={onRemove}>Remove</BtnXs>)}
+      </VFlex>
     </div>
   </Box>)
 }
@@ -76,7 +78,7 @@ const sxThumb = {
   marginBottom: 8,
   marginRight: 8,
   width: 140,
-  height: 140,
+  height: 170,
   padding: 4,
   boxSizing: 'border-box'
 };

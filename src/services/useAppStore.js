@@ -30,6 +30,7 @@ export const useAppStore = create((set,get) => ({
     })
 
   },
+
   closeStripeIntentModal: () => {
     set({stripeIntentModalClientSecret:''});
     set({stripeIntentModalIsOpen:false});
@@ -38,16 +39,22 @@ export const useAppStore = create((set,get) => ({
   set_stripeIntentModalIsOpen: (bOpen, type) => {
     set({stripeIntentModalIsOpen:bOpen});
   },
+  set_isWindowScrolled: (bIsScrolled) =>set({isWindowScrolled:bIsScrolled}),
+  isWindowScrolled:false,
+  set_isAppMainScrolled: (bIsScrolled) => set({isAppMainScrolled:bIsScrolled}),
+  isAppMainScrolled:false,
 
+  dashTabIdx:0,
+  loginPageInitTab:'login', //login|signup
   authModalIsOpen:false,
   authModalTabIndex: 0,
-  set_authModalIsOpen: async (bOpen, openTab) => {
-    if(openTab){
+  set_authModalIsOpen: async (bOpen, initialTab) => {
+    if(initialTab){
       set({
         authModalTabIndex: {
           'login':0,
           'signup':1,
-        }[openTab]
+        }[initialTab]
       })
     }
     set({authModalIsOpen:bOpen});

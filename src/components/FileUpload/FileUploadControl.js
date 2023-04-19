@@ -7,6 +7,7 @@ import axios from 'axios';
 import { animate } from 'framer-motion';
 import S3Img from './S3Img.js';
 import { rdzAcceptTypes } from './RdzAcceptTypes.js';
+import { serverOrigin } from '../../data/constants.js';
 
 export const animatePct = (duration=2, cb)=>{
   animate(0, 100, { duration: duration, onUpdate: v=>cb(v) })
@@ -39,7 +40,7 @@ export default function FileUploadControl({
     formData.append('suid', suid)
     animatePct(duration,(v)=>setProgressPct(v));
 
-    const res = await axios.post('http://localhost:4000/upload', formData )
+    const res = await axios.post(`${serverOrigin}/upload`, formData )
     .catch(console.error);
     console.log(res);
 

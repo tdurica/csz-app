@@ -1,12 +1,12 @@
 import React from 'react';
-import { Grid, Heading, } from '@chakra-ui/react';
+import { Grid, Heading,Box } from '@chakra-ui/react';
 
 
 export default function PgDocs() {
 
   return (
-    <>
-      <Heading>PgDocs</Heading>
-    </>
+    <Box sx={{pt:'70px'}}>
+      <Heading>Docs</Heading>
+    </Box>
   );
 }

@@ -4,7 +4,7 @@ import React from 'react';
 import { lightenDarkenColor } from '../helpers/math/zmath.mjs';
 import { HFlex } from '../views/bits/UtilityTags.js';
 
-export const CopyToClipboardButton = ({ text,children,sx }) => {
+export const CopyToClipboardButton = ({ text,children,sx={} }) => {
   const duration = 0.4;
   const copyIconColor = sx.color?sx.color:'#4d4d4d'
   const copiedColor = '#009d00';

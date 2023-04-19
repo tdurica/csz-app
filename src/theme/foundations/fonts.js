@@ -1,13 +1,72 @@
+import "@fontsource/raleway/200.css"
 import "@fontsource/raleway/300.css"
+import "@fontsource/raleway/400.css"
 import "@fontsource/raleway/500.css"
+import "@fontsource/raleway/600.css"
 import "@fontsource/raleway/700.css"
+import "@fontsource/raleway/800.css"
 import "@fontsource/raleway/900.css"
-import "@fontsource/montserrat/300.css"
-import "@fontsource/montserrat/500.css"
-import "@fontsource/montserrat/700.css"
-import "@fontsource/montserrat/900.css"
-import "@fontsource/fira-code"
 
+import "@fontsource/montserrat/200.css"
+import "@fontsource/montserrat/300.css"
+import "@fontsource/montserrat/400.css"
+import "@fontsource/montserrat/500.css"
+import "@fontsource/montserrat/600.css"
+import "@fontsource/montserrat/700.css"
+import "@fontsource/montserrat/800.css"
+import "@fontsource/montserrat/900.css"
+
+import "@fontsource/open-sans/300.css"
+import "@fontsource/open-sans/400.css"
+import "@fontsource/open-sans/500.css"
+import "@fontsource/open-sans/600.css"
+import "@fontsource/open-sans/700.css"
+import "@fontsource/open-sans/800.css"
+
+import "@fontsource/playfair-display/400.css"
+import "@fontsource/playfair-display/500.css"
+import "@fontsource/playfair-display/600.css"
+import "@fontsource/playfair-display/700.css"
+import "@fontsource/playfair-display/800.css"
+import "@fontsource/playfair-display/900.css"
+
+import "@fontsource/poppins/200.css"
+import "@fontsource/poppins/300.css"
+import "@fontsource/poppins/400.css"
+import "@fontsource/poppins/500.css"
+import "@fontsource/poppins/600.css"
+import "@fontsource/poppins/700.css"
+import "@fontsource/poppins/800.css"
+import "@fontsource/poppins/900.css"
+
+import "@fontsource/rubik/300.css"
+import "@fontsource/rubik/400.css"
+import "@fontsource/rubik/500.css"
+import "@fontsource/rubik/600.css"
+import "@fontsource/rubik/700.css"
+import "@fontsource/rubik/800.css"
+import "@fontsource/rubik/900.css"
+
+import "@fontsource/quicksand/300.css"
+import "@fontsource/quicksand/400.css"
+import "@fontsource/quicksand/500.css"
+import "@fontsource/quicksand/600.css"
+import "@fontsource/quicksand/700.css"
+
+import "@fontsource/inter/200.css"
+import "@fontsource/inter/300.css"
+import "@fontsource/inter/400.css"
+import "@fontsource/inter/500.css"
+import "@fontsource/inter/600.css"
+import "@fontsource/inter/700.css"
+import "@fontsource/inter/800.css"
+import "@fontsource/inter/900.css"
+
+import "@fontsource/fira-code/300.css"
+import "@fontsource/fira-code/400.css"
+import "@fontsource/fira-code/500.css"
+import "@fontsource/fira-code/600.css"
+import "@fontsource/fira-code/700.css"
 
 export const fontsTheme = {
   fonts: {
@@ -16,6 +75,13 @@ export const fontsTheme = {
     mont: 'Montserrat, Helvetica, sans-serif',
     mono: "Menlo, monospace",
     fira: "Fira Code, monospace",
+
+    opensans: "Open Sans, sans-serif",
+    playfair: "Playfair Display, serif",
+    poppins: "Poppins, sans-serif",
+    rubik: "Rubik, sans-serif",
+    quicksand: "Quicksand, sans-serif",
+    inter: "Inter, sans-serif",
   },
   fontWeights: {
     rale: { light: 300, medium: 500, bold: 700, heavy: 900, },

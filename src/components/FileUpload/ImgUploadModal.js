@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import UploadDropzone from './UploadDropzone.js';
 import { RiImageAddLine } from 'react-icons/ri';
-import { IBtn } from '../tags.js';
+import { IBtn } from 'views/bits/UtilityTags.js';
 
 export default function ImgUploadModal({ trigger,onFileAccepted }) {
 

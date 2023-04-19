@@ -27,7 +27,7 @@ export const buttonStyles = {
         "feature": {
           cursor: "pointer",
           position: 'relative',
-          zIndex: '1',
+          zIndex: '0',
           fontWeight:'400',
           fontSize:'20px',
           py:'15px',
@@ -65,11 +65,11 @@ export const buttonStyles = {
         "solidPink": {
           cursor: "pointer",
           position: 'relative',
-          zIndex: '1',
           fontWeight:'400',
           fontSize:'20px',
           py:'15px',
           backgroundColor: '#201048',
+          color: 'white',
           bgGradient: 'linear(90deg, red.500, purple.400)',
           width: '240px',
           borderRadius: '6px',
@@ -91,7 +91,7 @@ export const buttonStyles = {
         "outlinePink": {
           cursor: "pointer",
           position: 'relative',
-          zIndex: '1',
+          zIndex: '0',
           fontWeight:'400',
           fontSize:'20px',
           py:'15px',
@@ -119,6 +119,7 @@ export const buttonStyles = {
             boxShadow: "none",
           },
           _hover: {
+            color: 'white',
             _before:{
               opacity: "0",
             },

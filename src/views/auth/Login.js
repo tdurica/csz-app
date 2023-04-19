@@ -21,15 +21,28 @@ const validationSchema = yup.object().shape({
 });
 
 export default function Login({  }) {
-  const [tabIdx, setTabIdx] = useState(0)
+  const [tabIdx, setTabIdx] = useState(
+    {login:0,signup:1}[useAppStore.getState().loginPageInitTab]
+  )
   const [view, setView]= useState('auth') //auth | forgotPass | mustVerify
+  const [isSubmittingVerif, setIsSubmittingVerif]= useState(false)
   const verifyEmailInput = useRef(null);
   const [forgotPassEmail, setForgotPassEmail]= useState('')
   const [forgotPassMessage, setForgotPassMessage]= useState('')
   const toast = useToast();
   const setTabIndex = (i)=>{resetWithEmailCarry();setTabIdx(i);}
   const navigate = useNavigate();
-  const _login = useAuth.getState()._login;
+  // const _login = useAuth.getState()._login;
+
+  const _login = (res)=>{
+    toast({title: "Login success!", status: "info",});
+    useAuth.setState({user:res.user})
+    useAuth.setState({isAuthenticated:true})
+    jwt.setAccessToken(res.accessToken)
+    jwt.setRefreshToken(res.refreshToken)
+    // history.push('./dash');
+    navigate('../dash', { replace: true });
+  }
 
   async function _handleSubmit(values, form) {
     const headers = {"Content-Type": "application/json"};
@@ -38,20 +51,14 @@ export default function Login({  }) {
     if(tabIdx===0){
       const res = await fetch(`http://localhost:5000/auth/login`, {
         method:'POST', headers, body: JSON.stringify({email, password}),
-      }).then(r=>r.json())
+      }).then(r=>r.json()).catch((e)=>{console.error(e);return {success:false}});
       if(res && res.mustVerify){
         useAuth.setState({isAuthenticated:false})
         toast({title: "Please verify email", status: "info",});
         setView('mustVerify')
       }
-      if(res && res.success){
-        toast({title: "Login success!", status: "info",});
-        useAuth.setState({user:res.user})
-        useAuth.setState({isAuthenticated:true})
-        jwt.setAccessToken(res.accessToken)
-        jwt.setRefreshToken(res.refreshToken)
-        // history.push('./dash');
-        navigate('../dash', { replace: true });
+      else if(res && res.success){
+        _login(res)
       }else{
         toast({title: "Could not login, try again?", status: "error",});
         form.resetForm({values: {email, password}})
@@ -70,6 +77,21 @@ export default function Login({  }) {
     }
   }
 
+  async function verifyEmail(){
+    setIsSubmittingVerif(true)
+    const emailVerifCode = parseInt(verifyEmailInput.current.value.trim())
+    const headers = {"Content-Type": "application/json"};
+    const res = await fetch(`http://localhost:5000/auth/verify`, {
+      method:'POST', headers, body: JSON.stringify({emailVerifCode}),
+    }).then((r)=>r.json()).catch((e)=>{console.error(e);return {success:false}});
+    setIsSubmittingVerif(false)
+    if(res.success){
+      _login(res)
+    }else{
+      toast({title: "Unable to verify. Try again?", status: "warning",});
+    }
+  }
+
   const {
     values, errors, touched, handleChange, handleBlur,
     handleSubmit, isSubmitting, resetForm
@@ -82,17 +104,6 @@ export default function Login({  }) {
       email: '', password: '',
     }
   })
-
-  const verifyEmail = async ()=>{
-    const codeVal = parseInt(verifyEmailInput.current.value.trim())
-    const res = await authState()._verify(codeVal)
-    if(res.success){
-      toast({title: "Login success!", status: "info",});
-      navigate('../dash', { replace: true });
-    }else{
-      toast({title: "Unable to verify. Try again?", status: "warning",});
-    }
-  }
 
   const sendPasswordResetEmail = async ()=>{
     const res = await authState()._forgotPW(forgotPassEmail);
@@ -161,6 +172,8 @@ export default function Login({  }) {
         </Box>
         <Box justifyContent={'start'}>
           <Button
+            isLoading={isSubmitting}
+            loadingText='Submitting'
             onClick={handleSubmit}
             w='100%'
             bg={'blue.400'}
@@ -176,7 +189,10 @@ export default function Login({  }) {
       {view==='mustVerify' && (<>
         <Box sx={{border:'1px solid black', borderRadius:'6px', p:'5px'}}>
           <Input ref={verifyEmailInput} placeholder='Verification Code'/>
-          <Button onClick={verifyEmail}>Verify</Button>
+          <Button
+            isLoading={isSubmittingVerif}
+            loadingText='Submitting'
+            onClick={verifyEmail}>Verify</Button>
         </Box>
       </>)}
       {view==='forgotPass' && (<>

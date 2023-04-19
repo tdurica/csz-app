@@ -16,6 +16,8 @@ import { useMutationObservable } from '../hooks/useMutationObservable.js';
 import BrandLogoSvg from "../assets/logos/brand-logo.svg";
 import {SBNavLink} from "./navs/SBNavLink";
 import {HFlexSC} from "./bits/UtilityTags";
+import {useScroll} from "framer-motion";
+import {appState, useAppStore} from "../services/useAppStore";
 
 function scrollbarVisible(element) {
   return element.scrollHeight > element.clientHeight;
@@ -23,12 +25,35 @@ function scrollbarVisible(element) {
 export default function LayoutApp(props) {
   const { variant, children, ...rest } = props;
 
-  const [scrollVis, setScrollVis] = useState('0');
   const appMainRef = useRef(null);
-  const onAppMainMutation = useCallback((mutationList) => {
-    if(scrollbarVisible(appMainRef.current)){setScrollVis('1');
-    }else{setScrollVis('0');}}, [setScrollVis]);
-  useMutationObservable(appMainRef.current, onAppMainMutation);
+  const { scrollY, scrollYProgress } = useScroll({
+    container: appMainRef
+  })
+  // const isAppMainScrolled = useAppStore(s=>s.isAppMainScrolled)
+
+  function onScrollChange(value){
+    if(value>5 && !appState().isAppMainScrolled){
+      appState().set_isAppMainScrolled(true)
+    }
+    else if(value<=5 && appState().isAppMainScrolled){
+      appState().set_isAppMainScrolled(false)
+    }
+  }
+  useEffect(() => {
+    scrollY.on('change', onScrollChange);
+  }, []);
+  // useEffect(()=>{
+  //   if(scrollYProgress.current>2 && !isAppMainScrolled){
+  //     useAppStore.setState({isAppMainScrolled:true})
+  //   }else if(scrollYProgress.current<=2 && isAppMainScrolled){
+  //     useAppStore.setState({isAppMainScrolled:false})
+  //   }
+  // },[scrollYProgress.current])
+  // const [scrollVis, setScrollVis] = useState('0');
+  // const onAppMainMutation = useCallback((mutationList) => {
+  //   if(scrollbarVisible(appMainRef.current)){setScrollVis('1');
+  //   }else{setScrollVis('0');}}, [setScrollVis]);
+  // useMutationObservable(appMainRef.current, onAppMainMutation);
 
   document.documentElement.dir = "ltr";
   // Chakra Color Mode
@@ -46,7 +71,7 @@ export default function LayoutApp(props) {
              overflowX: "hidden",
              marginLeft:isDesktop?desktopSidebarWidth:'0',
              paddingRight:isDesktop?'10px':'1px',
-             paddingTop:'60px',
+             paddingTop:'70px',
              display: 'flex',
              flexDirection: 'column',
              flexBasis: '100vh',

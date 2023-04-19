@@ -9,10 +9,10 @@ import {
   Portal, SimpleGrid,
   Stack,
   Text,
-  useTheme, chakra, Divider, Spacer,
+  useTheme, chakra, Divider, Spacer, Link,
 } from '@chakra-ui/react';
 import React from 'react';
-import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import {AddIcon, DeleteIcon, EditIcon, ExternalLinkIcon} from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import AppNav from './navs/AppNav.js';
 import {HFlex, VFlex, VFlexCC} from './bits/UtilityTags.js';
@@ -55,33 +55,40 @@ export default function PgLanding() {
         <VFlexCC w='100%' id='top' bgGradient='linear(0deg,  blue.950, blue.750)' color={'white'}>
           <HStack w={limitWidth} my={10} h={'700px'} justify={'center'}>
 
-            <VFlex w='50%' textAlign='center' gap={8} align='center'>
+            <VFlex w={['100%','100%','45%']} textAlign='center' gap={8} align='center'>
               <Heading size='lg'>GET PAID WITH CRYPTO NOW</Heading>
               <Text>
                 We support stars, online and offline,<br/>
                 who produce high quality content.
               </Text>
               <HFlex flexWrap='wrap' justify='center' gap='15px'>
-                <Button variant='feature'>Pitchdeck</Button>
-                <Button variant='feature'>Join Our Telegram</Button>
+                <Button as={Link} variant='feature' isExternal
+                  href='downloads/CoinStarz Pitchdeck 1.83.docx.pdf'>
+                  Pitchdeck
+                </Button>
+                <Button as={Link} variant='feature' isExternal href='#'>
+                  Join Our Telegram
+                </Button>
               </HFlex>
-              <Button variant='solidPink'>Buy CoinStarz Tokens</Button>
+              <Button as={Link} variant='solidPink' isExternal href='#'>
+                Buy CoinStarz Tokens
+              </Button>
             </VFlex>
-            <Flex alignItems='center' w='50%'>
+            <Flex w='55%' alignItems='center' display={['none','none','flex']}>
               <AnimatePresence>
-                <motion.img
-                  style={{zIndex: '1', height: '400px', position:'absolute'}}
-                  key={HoCSZPng} src={HoCSZPng}
-                  initial={{x: 300, opacity: 0}}
-                  animate={{x: 140, opacity: 1}}
-                  transition={{ease: "linear", duration: 2}}
-                />
                 <motion.img
                   style={{zIndex: '1', height: '400px', position:'absolute'}}
                   key={HoIGPng} src={HoIGPng}
                   initial={{x: 300, opacity: 0}}
                   animate={{x: 0, opacity: 1}}
-                  transition={{ease: "linear", duration: 3}}
+                  transition={{ease: "easeOut", duration: 2.3,}}
+                />
+                <motion.img
+                  style={{zIndex: '1', height: '400px', position:'absolute'}}
+                  key={HoCSZPng} src={HoCSZPng}
+                  initial={{x: 300, opacity: 0}}
+                  animate={{x: 160, opacity: 1}}
+                  transition={{ease: "easeInOut", duration: 2, delay:1.2}}
                 />
               </AnimatePresence>
             </Flex>
@@ -91,10 +98,10 @@ export default function PgLanding() {
 
         <Spacer/>
 
-        <VFlexCC w='100%' bgGradient='linear(#F2587A, black)' color={'white'}>
-          <HStack w={limitWidth} my={10} h={'700px'} justify={'center'}>
+        <VFlexCC id='section-what-is-coinstarz' w='100%' bgGradient='linear(#F2587A, black)' color={'white'}>
+          <HStack w={limitWidth} my={10} justify={'center'} flexWrap={'wrap-reverse'}>
 
-            <VFlex w='50%' textAlign='center' gap={8} align='center'>
+            <VFlex w={['100%','100%','49%',]} textAlign='center' gap={8} align='center'>
               <chakra.em size='lg'>What is CoinStarz?</chakra.em>
               <Heading size='lg'>CoinStarz Platform</Heading>
               <Text>
@@ -109,19 +116,11 @@ export default function PgLanding() {
                 Everyone can be a star and start accepting crypto today!
               </Text>
               <Button variant='solidPink' onClick={()=>{
-                useAppStore.getState().set_authModalIsOpen(true, 'signup')
+                useAppStore.getState().set_authModalIsOpen(true, 'signup').catch()
               }}>Sign Up</Button>
             </VFlex>
-            <Flex alignItems='center' w='50%'>
-              <AnimatePresence>
-                <motion.img
-                  style={{zIndex: '1', height: '400px', position:'absolute'}}
-                  key={FedCSZPng} src={FedCSZPng}
-                  initial={{x: 300, opacity: 0}}
-                  animate={{x: 0, opacity: 1}}
-                  transition={{ease: "linear", duration: 2}}
-                />
-              </AnimatePresence>
+            <Flex justify='center' w={['100%','100%','50%',]}>
+              <Image sx={{zIndex:'1', h:'400px'}} src={FedCSZPng}/>
             </Flex>
 
           </HStack>
@@ -149,16 +148,8 @@ export default function PgLanding() {
                 // useAppStore.getState().set_authModalIsOpen(true, 'signup')
               }}>Token Info</Button>
             </VFlex>
-            <Flex alignItems='center' w='50%'>
-              <AnimatePresence>
-                <motion.img
-                  style={{zIndex: '1', height: '400px', position:'absolute'}}
-                  key={CreatorsPng} src={CreatorsPng}
-                  initial={{x: 300, opacity: 0}}
-                  animate={{x: 0, opacity: 1}}
-                  transition={{ease: "linear", duration: 2}}
-                />
-              </AnimatePresence>
+            <Flex justify='center' w='50%' display={['none','none','flex']}>
+              <Image sx={{zIndex:'1', h:'400px'}} src={CreatorsPng}/>
             </Flex>
 
           </HStack>

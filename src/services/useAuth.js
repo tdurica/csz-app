@@ -29,11 +29,12 @@ export const useAuth = create((set, get) => {
     userSettings: userSettingsDefaults,
     lnpUserInfo: lnpUserInfoDefaults,
     init: async() => {
-      await ls.initSessionStorageSync()
+      // debugger;
+      await ls.initSessionStorageSync().then()
       const {accessToken, refreshToken}  = jwt.all()
       if (accessToken.get && refreshToken.get) {
         if(!accessToken.expired){
-          __('accessToken is valid -> fetch user profile & login');
+          // __('accessToken is valid -> fetch user profile & login');
           const res = await get()._apiCall('api/profile', 'GET')
           if(res && res.success){
             _s(s=>{s.user=res.user})
@@ -48,7 +49,7 @@ export const useAuth = create((set, get) => {
         else {
           // if access expired, but refresh not expired, call
           // /refreshToken endpoint and login on successful refresh
-          __('accessToken is expired -> try refresh flow');
+          // __('accessToken is expired -> try refresh flow');
           if(!refreshToken.expired){
             await get()._refreshToken()
           }else{
@@ -80,7 +81,7 @@ export const useAuth = create((set, get) => {
       }
       const response = await fetch(`http://localhost:5000/${endpoint}`, opts)
       .then((r)=> r.json()).catch((e)=>__E(e));
-      console.log(endpoint,response)
+      console.log(endpoint,payload,response)
       return response
     },
     _register: async (email, password) => {
@@ -141,11 +142,21 @@ export const useAuth = create((set, get) => {
     },
     _refreshToken: async () => {
       const {accessToken, refreshToken}  = jwt.all()
-      // If either token is missing, logout completely and redirect to login/home
-      if(!accessToken.get || !refreshToken.get) {__('a token was not found, logout completely'); await get()._logout(); return false; }
-      if (!accessToken.expired) {__('accessToken is still valid -> exit refresh check and continue');return true;}
-      // If refreshToken is expired, logout completely and redirect to login/home
-      if (refreshToken.expired) { __('refreshToken is expired -> logout completely');await get()._logout(); return false; }
+      //::If either token is missing, logout completely and redirect to login/home
+      if(!accessToken.get || !refreshToken.get) {
+        // __('a token was not found, logout completely');
+        await get()._logout();
+        return false;
+      }
+      if (!accessToken.expired) {
+        // __('accessToken is still valid -> exit refresh check and continue');
+        return true;
+      }
+      //::If refreshToken is expired, logout completely and redirect to login/home
+      if (refreshToken.expired) {
+        // __('refreshToken is expired -> logout completely');
+        await get()._logout(); return false;
+      }
       const headers = {"Content-Type": "application/json"};
       const res = await fetch(`http://localhost:5000/auth/refreshToken`, {
         method:'POST', headers, body: JSON.stringify({refreshToken:refreshToken.get}),
@@ -188,8 +199,16 @@ export const useAuth = create((set, get) => {
     _forgotPW: (payload) => get()._apiCall('auth/forgotPassword', 'POST', payload),
     _resetPW: (payload) => get()._apiCall('auth/resetPassword', 'POST', payload),
     _changePW: async (newPassword) => get()._apiCall('auth/changePassword', 'POST', {newPassword}),
-    _updateUser: async (schema) => {
-      const res = await get()._apiCall('api/profile', 'PUT', schema)
+    _updateUser: async (updaterObject) => {
+      const res = await get()._apiCall('api/profile', 'PUT', updaterObject)
+      if(res && res.user) {
+        _s(s=>{s.user=res.user})
+      }
+      return res
+    },
+    //keynames for updaterObject here are lodash-style path strings to drill into collections
+    _updatePaths: async (updaterObject) => {
+      const res = await get()._apiCall('api/profile-path', 'PUT', updaterObject)
       if(res && res.user) {
         _s(s=>{s.user=res.user})
       }
@@ -197,9 +216,11 @@ export const useAuth = create((set, get) => {
     },
     _getUser: async () => {
       __(`fetching user`);
-      const res = await get()._apiCall(`api/profile`, 'GET')
+      const res = await get()._apiCall(`api/profile`, 'GET').catch(e=>false)
       console.log(`_getUser:`,res)
-      _s(s=>{s.user = res.user})
+      if(res && res.user) {
+        _s(s=>{s.user = res.user})
+      }
       return res
     },
     _getPublicPage: async () => {
@@ -235,29 +256,37 @@ export const jwt = {
     }
   },
   all: () => {
-    const rv = {
+    const rvErr = {
       accessToken: {get: null, decode: null, expired: null, secUntilExp: null,},
       refreshToken: {get: null, decode: null, expired: null, secUntilExp: null,},
     };
-    const accessToken = jwt.getAccessToken() ?? false
-    const refreshToken = jwt.getRefreshToken() ?? false
-    if(!accessToken || !refreshToken) {return rv;}
-    const nowMs = Date.now()
-    rv.accessToken.get = accessToken;
-    rv.refreshToken.get = refreshToken;
-    rv.accessToken.decode = jwtDecode(accessToken);
-    rv.refreshToken.decode = jwtDecode(refreshToken);
-    const expAccess = rv.accessToken.decode.exp * 1000;
-    const expRefresh = rv.refreshToken.decode.exp * 1000;
-    rv.accessToken.secUntilExp = (expAccess - nowMs)/1000
-    rv.refreshToken.secUntilExp = (expRefresh - nowMs)/1000
-    __(rv.accessToken.secUntilExp + ' seconds until accessToken expiry' );
-    __(rv.refreshToken.secUntilExp + ' seconds until refreshToken expiry' );
-    rv.accessToken.expired = nowMs >= expAccess
-    rv.refreshToken.expired = nowMs >= expRefresh
-    // if (!rv.accessToken.expired) {__('accessToken is still valid -> exit refresh check and continue');}
-    // if (rv.accessToken.expired) {__('refreshToken is expired -> logout completely');}
-    return rv
+    const rv = rvErr;
+    try{
+      const accessToken = jwt.getAccessToken() ?? false
+      const refreshToken = jwt.getRefreshToken() ?? false
+      if(!accessToken || !refreshToken) {
+        return rv;
+      }
+      const nowMs = Date.now()
+      rv.accessToken.get = accessToken;
+      rv.refreshToken.get = refreshToken;
+      rv.accessToken.decode = jwtDecode(accessToken);
+      rv.refreshToken.decode = jwtDecode(refreshToken);
+      const expAccess = rv.accessToken.decode.exp * 1000;
+      const expRefresh = rv.refreshToken.decode.exp * 1000;
+      rv.accessToken.secUntilExp = (expAccess - nowMs)/1000
+      rv.refreshToken.secUntilExp = (expRefresh - nowMs)/1000
+      // __(rv.accessToken.secUntilExp + ' seconds until accessToken expiry' );
+      // __(rv.refreshToken.secUntilExp + ' seconds until refreshToken expiry' );
+      rv.accessToken.expired = nowMs >= expAccess
+      rv.refreshToken.expired = nowMs >= expRefresh
+      // if (!rv.accessToken.expired) {__('accessToken is still valid -> exit refresh check and continue');}
+      // if (rv.accessToken.expired) {__('refreshToken is expired -> logout completely');}
+      return rv
+    }catch(e){
+      console.warn(e);
+      return rvErr
+    }
   },
 
 }
@@ -266,7 +295,7 @@ export const ls = {
   set: (key,value) => window.localStorage.setItem(key, value),
   setLogout: () => window.localStorage.setItem('logout', String(Date.now())),
   emitSession: () => {
-    __("Emitting sessionStorage")
+    // __("Emitting sessionStorage")
     localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
     localStorage.removeItem("sessionStorage");
   },
@@ -274,7 +303,7 @@ export const ls = {
     if (typeof window !== "undefined") {
       window.addEventListener("storage", async(event) => {
         const {newValue} = event
-        __("storage event", event)
+        // __("storage event", event)
         if (event.key === "getSessionStorage") {
           // Some tab asked for the sessionStorage -> send it
           ls.emitSession()
@@ -283,11 +312,13 @@ export const ls = {
           // sessionStorage is empty -> fill it
           if(newValue && newValue.length){
             const data = JSON.parse(newValue)
+            // debugger
             for (let key in data) {
               sessionStorage.setItem(key, data[key])
             }
             if(data.accessToken){
-              await useAuth.getState()._getUser()
+              await useAuth.getState()._getUser();
+              await useAuth.setState({isAuthenticated: true })
             }
           }
         }
@@ -303,7 +334,7 @@ export const ls = {
           &&(sessionStorage.refreshToken!=null && sessionStorage.refreshToken==='')
         )) {
         // Ask other tabs for session storage
-        __("Calling getSessionStorage")
+        // __("Calling getSessionStorage")
         localStorage.setItem("getSessionStorage", String(Date.now()))
       }
     }
@@ -311,7 +342,7 @@ export const ls = {
 
 }
 
-const uuidv4 = () => {
+export const uuidv4 = () => {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (c ^ (crypto.webcrypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
   )

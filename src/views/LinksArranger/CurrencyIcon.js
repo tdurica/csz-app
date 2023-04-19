@@ -7,7 +7,7 @@ import ADApng from "../../assets/logos-other/LinkedIn.png";
 import USDTpng from "../../assets/logos-other/dextools-logo.png";
 import USDCpng from "../../assets/logos-other/discord-logo.png";
 
-export default function CurrencyIcon({ currency }){
+export default function CurrencyIcon({ symbol }){
   const isrc = {
     'Bitcoin (BTC)': BTCpng,
     'Ethereum (ETH)': ETHpng,
@@ -15,7 +15,7 @@ export default function CurrencyIcon({ currency }){
     'Cardano (ADA)': ADApng,
     'Tether (USDT)': USDTpng,
     'USD Coin (USDC)': USDCpng,
-  }[currency]
+  }[symbol]
   return (
     <Image src={isrc} sx={{
       border: '1px solid gray',

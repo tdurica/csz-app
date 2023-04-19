@@ -24,12 +24,12 @@ export default function AppFooter(props) {
       <HFlexCC mt={6} gap={6} flexWrap='wrap'>
         <Image src={BrandLogoTitle} h={['90px','90px','120px']} cursor='pointer' onClick={()=>{navigate('/')}}/>
         <HFlex gap={5}>
-          <Image h='60px' src={DiscordPng}/>
-          <Image h='60px' src={FacebookPng}/>
-          <Image h='60px' src={InstagramPng}/>
-          <Image h='60px' src={RedditPng}/>
-          <Image h='60px' src={TelegramPng}/>
-          <Image h='60px' src={TwitterPng}/>
+          <Link isExternal href='#' cursor='pointer'><Image h='60px' src={DiscordPng}/></Link>
+          <Link isExternal href='#' cursor='pointer'><Image h='60px' src={FacebookPng}/></Link>
+          <Link isExternal href='#' cursor='pointer'><Image h='60px' src={InstagramPng}/></Link>
+          <Link isExternal href='#' cursor='pointer'><Image h='60px' src={RedditPng}/></Link>
+          <Link isExternal href='#' cursor='pointer'><Image h='60px' src={TelegramPng}/></Link>
+          <Link isExternal href='#' cursor='pointer'><Image h='60px' src={TwitterPng}/></Link>
         </HFlex>
       </HFlexCC>
       <List display="flex" my={{ base: "10px", xl: "15px" }}>

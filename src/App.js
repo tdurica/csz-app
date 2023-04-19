@@ -13,6 +13,8 @@ import PgSubscriptions from './views/PgSubscriptions.js';
 import PgWalletHistory from './views/PgWalletHistory.js';
 import PgNotFound from './views/PgNotFound.js';
 import { useAuth } from './services/useAuth.js';
+import {useScroll} from "framer-motion";
+import {appState} from "./services/useAppStore";
 // const AppProvider = React.lazy(() =>
 //   import(/* webpackChunkName: "views-app" */ './AppProvider.js')
 // );
@@ -38,7 +40,7 @@ const router = (isAuthenticated)=>createBrowserRouter([
     ],
   },
   {
-    path: "*", element: <PgNotFound />,loader: async (e, $$)=> {
+    path: "*", element: <PgNotFound />, loader: async (e)=> {
       // console.log(e.params['*'])
       const headers = {"Content-Type": "application/json"};
       const res = await fetch(`http://localhost:5000/api/public/${e.params['*']}`, {
@@ -51,6 +53,22 @@ const router = (isAuthenticated)=>createBrowserRouter([
 export default function App(props) {
   const { variant, children, ...rest } = props;
   const isAuthenticated = useAuth(s=>s.isAuthenticated)
+
+  const { scrollY, scrollYProgress } = useScroll()
+  // const isWindowScrolled = useAppStore(s=>s.isWindowScrolled)
+  function onScrollChange(value){
+    if(value>5 && !appState().isWindowScrolled){
+      console.log('win scrolled true')
+      appState().set_isWindowScrolled(true)
+    }
+    else if(value<=5 && appState().isWindowScrolled){
+      console.log('win scrolled false')
+      appState().set_isWindowScrolled(false)
+    }
+  }
+  useEffect(() => {
+    scrollY.on('change', onScrollChange);
+  }, []);
 
   return (<>
     <Suspense fallback={<div className="loading"/>}>

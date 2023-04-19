@@ -1,9 +1,24 @@
 import {
-  Box, Portal,Center,
-  Link, Button, Image, MenuButton, Menu, MenuList, MenuDivider, MenuItem, Avatar,
+  Box,
+  Portal,
+  Center,
+  Badge,
+  Link,
+  Button,
+  Image,
+  MenuButton,
+  Menu,
+  MenuList,
+  MenuDivider,
+  MenuItem,
+  Avatar,
+  IconButton,
+  useBreakpointValue,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { HFlexCC, IBtn, VFlexCC } from '../bits/UtilityTags.js';
+import React, {useEffect, useRef, useState} from 'react';
+import {HFlex, HFlexCC, HFlexSC, IBtn, VFlexCC} from '../bits/UtilityTags.js';
 import { NavLink, useNavigate,Outlet, useLocation,  } from 'react-router-dom';
 import { useDeviceMode } from '../../theme/foundations/breakpoints.js';
 import { FaUserCircle } from 'react-icons/fa';
@@ -12,112 +27,145 @@ import { FaUserCircle } from 'react-icons/fa';
 import BrandLogoTitle from "assets/CSZWhiteLogo.png";
 // import BrandLogo from "assets/logos/brand-logo.svg";
 // import { CISVG_FrogeNavBack } from '../../assets/Brand.js';
-import { useAppStore } from '../../services/useAppStore.js';
+import {appState, useAppStore} from '../../services/useAppStore.js';
 import {ExternalLinkIcon, HamburgerIcon} from '@chakra-ui/icons';
 import { useAuth, authState } from '../../services/useAuth.js';
 import AuthModal from '../auth/AuthModal.js';
 import {createBrowserHistory} from "history";
+import {motion, useScroll } from "framer-motion";
+import {clientOrigin} from "../../data/constants";
+import {abs} from "../bits/cssHelpers";
 const history = createBrowserHistory();
 
 
 export default function AppNav(props) {
-  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   // console.log(`loc: `, location);
-  const [isMobile, isDesktop] = useDeviceMode()
   const isAuthenticated = useAuth(s=>s.isAuthenticated)
   const user = useAuth(s=>s.user)
-  // const [get_appNavDrawerOpen, set_appNavDrawerOpen] = useAtom(appNavDrawerOpenAtom)
-  // const [get_fixedRightDist, set_fixedRightDist] = useState('10px')
-
-  // Here are all the props that may change depending on navbar's type or state.(secondary, variant, scrolled)
-  let navbarColor = "transparent";
-  let navbarBg = "none";
-  let navbarBorder = "transparent";
-  let paddingX = "15px";
+  const isWindowScrolled = useAppStore(s=>s.isWindowScrolled)
+  const isAppMainScrolled = useAppStore(s=>s.isAppMainScrolled)
   const adminRoutes = ['/dash','/settings','/subscriptions','/wallet-history','/wallet-history',]
+  const isPublicRoute = adminRoutes.indexOf(location.pathname)<0
+  const isAppRoute = adminRoutes.indexOf(location.pathname)>-1
+  const isMobile = useBreakpointValue({base:true, md:false})
+  const toggleAppNavDrawer=()=>appState().set_appNavDrawerOpen(!appState().appNavDrawerOpen)
+
+  const sxFixedBar = {zIndex:'1000',position:"fixed", w:'100vw', h:'70px', top:"0", left:"0", right:"0",}
   const sxNavBtn = {
+    cursor:'pointer',
     color: 'global.bg',
     bgColor: 'gray.300',
     h: '2.5rem', w: '2.5rem',
     borderRadius: '7px',
     _hover: { bgColor: 'gray.500', },
   }
+
+  const Brand = ({...rest})=>(
+    <Image src={BrandLogoTitle} sx={{ //...abs(0,null,null,0),
+      h:['50px','50px','70px'],w:'auto', mr:'auto', cursor:'pointer'
+    }} onClick={()=>{navigate('/')}} {...rest}/>
+  );
+
+  const PublicHandleLink = ({...rest})=> user.publicHandle && (
+    <Link as={NavLink} isExternal to={`${clientOrigin}/${user.publicHandle}`} mr={3} color='gray.550' {...rest}>
+      <Badge style={{textTransform:'lowercase'}} _hover={{bgColor:'gray.50'}} variant='outline' colorScheme='telegram'>
+        http://coinstarz.com/{user.publicHandle}
+      </Badge>
+    </Link>
+  );
+
+  const PitchDeckLink = ({...rest})=>(
+      <Link href='downloads/CoinStarz Pitchdeck 1.83.docx.pdf' isExternal mr={3} {...rest}>
+        Pitch Deck <ExternalLinkIcon mt={-1}/>
+      </Link>
+  );
+  const DashboardLink = ({...rest})=>(
+    <Link as={NavLink} to="/dash" mr={3} color='gray.550' {...rest}>Dashboard</Link>
+  );
+  const AuthButtons = ({...rest})=>(<HFlex {...rest}>
+    <Button variant='solidPink' w='fit-content' onClick={()=>{
+      // useAppStore.getState().set_authModalIsOpen(true, 'login')
+      useAppStore.setState({loginPageInitTab:'login'});
+      navigate('/login');
+    }} {...rest}>Log in</Button>
+    <Button variant='solidPink' w='fit-content' ml={2} onClick={()=>{
+      // useAppStore.getState().set_authModalIsOpen(true, 'signup')
+      useAppStore.setState({loginPageInitTab:'signup'})
+      navigate('/login')
+    }} {...rest}>Sign up</Button>
+  </HFlex>
+  );
+  const UserMenu = ({...rest})=>(
+    <Menu >
+      <MenuButton
+        as={IconButton} aria-label='User Menu'
+        sx={{ ...sxNavBtn, borderRadius:'50px',mt:'4px',justifySelf:'flex-end' }}
+        icon={<FaUserCircle/>} {...rest}
+      />
+      <MenuList>
+        <Center fontSize={12}>Logged in as:</Center>
+        <Center>
+          <Avatar size={'lg'} src={user.image}/>
+        </Center>
+        <VFlexCC>
+          <Box>{user.email}</Box>
+          <Box>{user.name}</Box>
+        </VFlexCC>
+        <MenuDivider />
+        <MenuItem onClick={()=>{
+          useAppStore.setState({dashTabIdx:1})
+          navigate('/dash')
+        }}>Account Settings</MenuItem>
+        <MenuItem onClick={()=>{
+          authState()._logout().then()
+          navigate('/')
+        }}>Logout</MenuItem>
+      </MenuList>
+    </Menu>
+  );
+  const HamburgerButton = ({...rest})=>(
+    <Center id="AppMenuIcon" sx={sxNavBtn} onClick={toggleAppNavDrawer} {...rest}>
+      <HamburgerIcon boxSize={5}/>
+    </Center>
+  );
+
+
   return (<>
       <Portal>
-        <Box zIndex='1000' position="fixed" w='100vw' top="0" left="0" right="0">
-
-          <HFlexCC id="__AppNavbar" justify='space-between' top="10px" right="24px">
-            <Image src={BrandLogoTitle} h={['70px','70px','90px']} cursor='pointer' onClick={()=>{navigate('/')}}/>
-            <HFlexCC mr={3}>
-              {adminRoutes.indexOf(location.pathname)<0 &&
-                <Link href='downloads/CoinStarz Pitchdeck 1.83.docx.pdf' isExternal mr={3}>
-                  Pitch Deck <ExternalLinkIcon mt={-1}/>
-                </Link>
-              }
-
-              {isAuthenticated ? (<>
-                  {adminRoutes.indexOf(location.pathname)<0 ? (<>
-                    <Link as={NavLink} to="/dash" mr={3} color='gray.550'>Dashboard</Link>
-                  </>) : (<>
-                    <Link as={NavLink} to="/dash" mr={3} color='gray.550'>Dashboard</Link>
-                    <Link as={NavLink} to="/wallet-history" mr={3} color='gray.550'>Wallet History</Link>
-                  </>)}
-                  <Menu>
-                    <MenuButton as={Center} cursor={'pointer'}>
-                      <IBtn sx={{ ...sxNavBtn, borderRadius:'50px' }} I={FaUserCircle}/>
-                    </MenuButton>
-                    <MenuList alignItems={'center'}>
-                      <Center fontSize={12}>Logged in as:</Center>
-                      <br />
-                      <Center>
-                        <Avatar
-                          size={'lg'}
-                          src={'https://avatars.dicebear.com/api/male/username.svg'}
-                        />
-                      </Center>
-                      <br />
-                      <VFlexCC>
-                        <Box>{user.email}</Box>
-                        <Box>{user.name}</Box>
-                      </VFlexCC>
-                      <br />
-                      <MenuDivider />
-                      <MenuItem onClick={()=>{navigate('/settings')}}>Account Settings</MenuItem>
-                      <MenuItem onClick={()=>{
-                        authState()._logout().then()
-                        navigate('/')
-                      }}>Logout</MenuItem>
-                    </MenuList>
-                  </Menu>
-                  <Box ml="8px" w={{ base: '100%', md: 'unset' }}>
-                    {isMobile && adminRoutes.indexOf(location.pathname)>-1 && (
-                      <Center id="AppMenuIcon"
-                              onClick={() => useAppStore.getState().set_appNavDrawerOpen(!useAppStore.getState().appNavDrawerOpen)}
-                              cursor='pointer'
-                              sx={sxNavBtn}>
-                        <HamburgerIcon boxSize={5}/>
-                      </Center>
-                    )}
-                  </Box>
-                </>)
-                :(<>
-
-                  <Button onClick={()=>{
-                    // useAppStore.getState().set_authModalIsOpen(true, 'login')
-                    navigate('/login')
-                    // authState().logInWithEmailAndPassword()
-                  }}>Log in</Button>
-                  <Button ml={2} onClick={()=>{
-                    useAppStore.getState().set_authModalIsOpen(true, 'signup')
-
-                    // authState().registerWithEmailAndPassword()
-                    }}>Sign up</Button>
-                </>)}
-            </HFlexCC>
-          </HFlexCC>
-        </Box>
+        <Box sx={{...sxFixedBar, transition:'opacity ease 0.8s',
+          opacity:isAppMainScrolled || isWindowScrolled?'1':'0', bgColor:'black'}}
+        />
+        <Grid id="__AppNavbar" sx={{
+           ...sxFixedBar, justifyContent:'flex-end', pr:'12px', alignItems:'center',
+        }}
+              templateAreas={useBreakpointValue({
+                base: `"brand user"
+                       "links links"`,
+                md: `"brand links user"`,
+              })}
+              templateColumns={useBreakpointValue({
+                base: '1fr auto',
+                md: 'auto 1fr auto',
+              })}
+              // w={useBreakpointValue({
+              //   base: 'auto',
+              //   md: 'auto',
+              // })}
+        >
+          <Brand gridArea={'brand'}/>
+          <GridItem area={'links'} justifySelf='flex-end'>
+            {isPublicRoute && <PitchDeckLink/>}
+            {isAuthenticated && isPublicRoute && (<DashboardLink/>)}
+            {isAuthenticated && isAppRoute && (<PublicHandleLink/>)}
+          </GridItem>
+          {isAuthenticated && (<UserMenu gridArea={'user'}/>)}
+          {/*{isMobile && isAppRoute && (*/}
+          {/*  <HamburgerButton/>*/}
+          {/*)}*/}
+          {!isAuthenticated && location.pathname !=='/login' && (<AuthButtons gridArea={'user'}/>)}
+        </Grid>
       </Portal>
       <AuthModal/>
       <Outlet/>

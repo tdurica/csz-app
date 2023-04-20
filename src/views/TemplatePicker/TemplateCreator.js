@@ -33,6 +33,7 @@ import ColorPopover from "../bits/ColorPopover";
 import {useAuth} from "../../services/useAuth";
 import ImageUploadCtrl from "../LivePreview/ImageUploadCtrl";
 import {getPath} from "../../helpers/pathStringUtils";
+import {ArrowUpIcon} from "@chakra-ui/icons";
 
 const specDefaults = {
   backgroundSpec:{
@@ -85,6 +86,7 @@ const PropSlider = ({heading, min=0, max=100, step=1, valPrefix='', valSuffix=''
     <Box sx={{border:'1px solid', borderColor:'gray.200', borderRadius:'7px'}} {...rest}>
       <HFlex align='center' gap={3}>
         <Heading size='xs' my={3}>{heading}</Heading>
+        {valSuffix==='deg' && (<ArrowUpIcon sx={{transform:`rotate(${sliderValue}deg)`}}/>)}
         <Box sx={{bgColor:'gray.200',borderRadius:'7px', px:'3px'}}>
           {valPrefix}
           {hasValEnum ? valEnum[sliderValue] : sliderValue}
@@ -170,18 +172,18 @@ const BackgroundSpec = ({onChange=()=>{}, ...rest})=>{
   const sxCard={bgColor:'gray.200',borderRadius:'7px', h:'50px', wordWrap:'break-all'}
 
   return (<VFlex gap={2}>
-    <SimpleGrid columns={3} gap={1} mb={3} maxWidth='600px'>
-      <Button sx={sxCard} onClick={()=>{setBgType('flat')}}><VFlexCC><MdOutlinePalette size='25'/><Text>Flat</Text></VFlexCC></Button>
-      <Button sx={sxCard} onClick={()=>{setBgType('gradient')}}><VFlexCC><MdGradient size='25'/><Text>Gradient</Text></VFlexCC></Button>
-      <Button sx={sxCard} onClick={()=>{setBgType('photo')}}><VFlexCC><MdImage size='25'/><Text>Photo</Text></VFlexCC></Button>
+    <SimpleGrid columns={3} gap={2} mb={3} maxWidth='600px'>
+      <Button sx={{...sxCard, outline:bgType==='flat'?'solid':'unset'}} onClick={()=>{setBgType('flat')}}><VFlexCC><MdOutlinePalette size='25'/><Text>Flat</Text></VFlexCC></Button>
+      <Button sx={{...sxCard, outline:bgType==='gradient'?'solid':'unset'}} onClick={()=>{setBgType('gradient')}}><VFlexCC><MdGradient size='25'/><Text>Gradient</Text></VFlexCC></Button>
+      <Button sx={{...sxCard, outline:bgType==='photo'?'solid':'unset'}} onClick={()=>{setBgType('photo')}}><VFlexCC><MdImage size='25'/><Text>Photo</Text></VFlexCC></Button>
     </SimpleGrid>
     {bgType==='flat' && (<>
-      <ColorPopover btnText='Flat Color' initColor={bgFlatColor} path={'customTpl.bgFlatColor'} onSave={setBgFlatColor}/>
+      <ColorPopover btnText='Flat Color' initColor={init.bgFlatColor} onSave={setBgFlatColor}/>
     </>)}
     {bgType==='gradient' && (<>
-      <ColorPopover btnText='Gradient Color 1' initColor={bgGrdColor1} path={'customTpl.bgGrdColor1'} onSave={setBgGrdColor1}/>
-      <ColorPopover btnText='Gradient Color 2' initColor={bgGrdColor2} path={'customTpl.bgGrdColor2'} onSave={setBgGrdColor2}/>
-      <PropSlider heading='Direction' onChange={setBgGrdDir} min={0} max={30} valSuffix='deg'/>
+      <ColorPopover btnText='Gradient Color 1' initColor={init.bgGrdColor1} onSave={setBgGrdColor1}/>
+      <ColorPopover btnText='Gradient Color 2' initColor={init.bgGrdColor2} onSave={setBgGrdColor2}/>
+      <PropSlider heading='Direction' onChange={setBgGrdDir} min={0} max={360} valSuffix='deg'/>
     </>)}
     {bgType==='photo' && (<>
       <ImageUploadCtrl path={'customTpl.backgroundSpec.bgImage'} label='Background Image' onSave={setBgImage}/>

@@ -109,7 +109,10 @@ export default function AppNav(props) {
         <Center>
           <Avatar size={'lg'} src={user.image}/>
         </Center>
-        <VFlexCC>
+        <VFlexCC sx={{maxWidth: '200px',
+          wordBreak: 'break-all',
+          textAlign: 'center',
+          margin: '0 auto'}}>
           <Box>{user.email}</Box>
           <Box>{user.name}</Box>
         </VFlexCC>

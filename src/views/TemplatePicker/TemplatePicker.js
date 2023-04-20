@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {Box, Button, Center, Flex, Heading, HStack, Image, SimpleGrid, Text} from "@chakra-ui/react";
+import {Box, Button, Center, Flex, Heading, HStack, Image, Link, SimpleGrid, Text} from "@chakra-ui/react";
 import {BsInfoCircle} from "react-icons/bs";
 import {HFlex, HFlexSC, VFlex, VFlexCC} from "../bits/UtilityTags";
 import {FaPallet} from "react-icons/fa";
@@ -27,6 +27,17 @@ export function getBackgroundSx(backgroundSpec){
     }
   }
 }
+function StyledThemeDummy({tpl}){
+  return (
+    <VFlex sx={getBackgroundSx(tpl.backgroundSpec)} p={4} gap={4} borderRadius='7px'>
+      <br/>
+      <Box sx={tpl.acctCardSpec} w='100%' h='20px'/>
+      <Box sx={tpl.acctCardSpec} w='100%' h='20px'/>
+      <Box sx={tpl.acctCardSpec} w='100%' h='20px'/>
+      <Box sx={tpl.acctCardSpec} w='100%' h='20px'/>
+    </VFlex>
+  )
+}
 
 export default function TemplatePicker(){
   const activeTemplate = useAuth(s=>s.user.template)
@@ -44,44 +55,33 @@ export default function TemplatePicker(){
   const onSelectCreateYourOwn = () => {
     setShowTplCreator(!showTplCreator)
   }
+
   return (<>
     <br/>
     <HFlex>
       <Heading size='md' mb={3}>Themes</Heading>
-      <Button ml={3} size='sm' onClick={onSelectCreateYourOwn}>{showTplCreator?'Cancel':'Create'}</Button>
+      <Button ml={3} size='sm' onClick={onSelectCreateYourOwn}>{showTplCreator?'Close Theme Editor':'Edit Custom Theme'}</Button>
     </HFlex>
     {showTplCreator && (<TemplateCreator onClose={onSelectCreateYourOwn}/>)}
-    <SimpleGrid columns={3} gap={3} maxWidth='600px'>
-      <VFlex p={4} gap={4} borderRadius='7px'
-             border={activeTemplate==="Custom"?'3px dashed pink':'none'}
+    <SimpleGrid columns={3} gap={2} maxWidth='600px' gridAutoFlow={'dense'} templateColumns='repeat(auto-fit, minmax(150px, 1fr))'>
+      <VFlex p={2} gap={4} borderRadius='7px'
+             border={activeTemplate==="Custom"?'3px dashed pink':'3px solid transparent'}
              onClick={()=>{onSelectTemplate("Custom")}}
       >
-        <VFlex sx={getBackgroundSx(customTpl.backgroundSpec)} p={4} gap={4} borderRadius='7px'>
-          <br/>
-          <Box sx={customTpl.acctCardSpec} w='100%' h='20px'/>
-          <Box sx={customTpl.acctCardSpec} w='100%' h='20px'/>
-          <Box sx={customTpl.acctCardSpec} w='100%' h='20px'/>
-          <Box sx={customTpl.acctCardSpec} w='100%' h='20px'/>
-        </VFlex>
-        <Center>Custom</Center>
+        <StyledThemeDummy tpl={customTpl}/>
+        <Center fontWeight={activeTemplate === "Custom"?'bold':'normal'}>Custom</Center>
       </VFlex>
       {templateDefs.map((v,i)=> {
         const {bgType,bgFlatColor,bgGrdColor1,bgGrdColor2,bgGrdDir,bgImage} = v.backgroundSpec
         return (
-          <VFlex key={v.label} p={4} gap={4} borderRadius='7px'
-                 border={activeTemplate === v.label ? '3px dashed pink' : 'none'}
+          <VFlex key={v.label} p={2} gap={4} borderRadius='7px'
+                 border={activeTemplate === v.label ? '3px dashed pink' : '3px solid transparent'}
                  onClick={() => {
                    onSelectTemplate(v.label)
                  }}
           >
-            <VFlex sx={getBackgroundSx(v.backgroundSpec)} p={4} gap={4} borderRadius='7px'>
-              <br/>
-              <Box sx={v.acctCardSpec} w='100%' h='20px'/>
-              <Box sx={v.acctCardSpec} w='100%' h='20px'/>
-              <Box sx={v.acctCardSpec} w='100%' h='20px'/>
-              <Box sx={v.acctCardSpec} w='100%' h='20px'/>
-            </VFlex>
-            <Center>{v.label}</Center>
+            <StyledThemeDummy tpl={v}/>
+            <Center fontWeight={activeTemplate === v.label?'bold':'normal'}>{v.label}</Center>
           </VFlex>
         )
       })}

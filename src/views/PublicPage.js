@@ -15,7 +15,7 @@ import {
   TabPanels,
   Tabs,
   Portal,
-  Heading
+  Heading, Avatar
 } from "@chakra-ui/react";
 import {SlSocialInstagram, SlSocialSpotify, SlSocialTwitter} from "react-icons/sl";
 import {TfiEmail} from "react-icons/tfi";
@@ -30,6 +30,7 @@ import SocLinkIcon from "../hooks/SocLinkIcon/SocLinkIcon";
 import {templateDefs} from "../data/templateDefs";
 import {TbDotsVertical, TbGridDots, TbGripVertical} from "react-icons/tb";
 import {getBackgroundSx} from "./TemplatePicker/TemplatePicker";
+import {desktopSidebarWidth} from "../data/constants";
 
 function AcctLinks({user, tpl}){
   return user.acctLinks.map((v, i, a) => v.show && (
@@ -113,7 +114,7 @@ export default function PublicPage({user, liveMode=false}) {
   const tpl = user.template === 'Custom'
     ? user.customTpl
     : templateDefs.find(v=>v.label===user.template);
-  const iconClr = user.socLinksColor ?? '#FFFFFF'
+  const socLinksColor = user.socLinksColor ?? '#FFFFFF'
   const willShowSocLinks = user.showSocLinks && user.socLinks.length>0;
   const willShowAccts = user.showTabAccs && user.acctLinks.length>0;
   const willShowNfts = user.showTabNfts && user.nftLinks.length>0;
@@ -125,15 +126,41 @@ export default function PublicPage({user, liveMode=false}) {
   console.log('tabIdx ',tabIdx)
   return (<>
     {passedNsfwWarning && (
-      <VFlexCS sx={{w: '100%', h: 'auto', py: '12px', ...getBackgroundSx(tpl.backgroundSpec)}}>
-        <VFlexCS gap={1} sx={{w: '360px', h: 'auto', py: '12px'}}>
-          {user.image && <Image borderRadius={50} boxSize={16} src={user.image}/>}
+      <Box
+        sx={{
+          height: '100%',
+          overflowY: "scroll",
+          overflowX: "hidden",
+          paddingTop:'30px',
+          display: 'flex',
+          flexDirection: 'column',
+          flexBasis: '100vh',
+          backgroundColor: `#F9F9FA`,//brand.bg
+          // backgroundColor: `rgba(17,22,35,${scrollVis})`,//brand.bg
+          alignItems: 'center',
+          "&::-webkit-scrollbar": {
+            width: "6px",
+            backgroundColor: 'inherit',
+          },
+          "&::-webkit-scrollbar-track": {
+            width: "2px",
+            backgroundColor: 'inherit',
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "blue.700",
+            borderRadius: "24px",
+          },
+          ...abs0(),
+          ...getBackgroundSx(tpl.backgroundSpec),
+        }}>
+        <VFlexCS gap={1} sx={{w: '360px', h: '100%', py: '12px'}}>
+          {user.image && <Avatar size='xl' src={user.image}/>}
           <VFlexCS gap={1} sx={{...tpl.headlinesSpec.font, color: tpl.headlinesSpec.color}}>
             <HFlexCC>{user.name}</HFlexCC>
             <HFlexCC textAlign='center'>{user.greeting}</HFlexCC>
           </VFlexCS>
           {willShowSocLinks && (
-            <HFlexSC gap={1} fill={iconClr}>
+            <HFlexSC gap={1} fill={socLinksColor}>
               <SocLinks user={user} tpl={tpl}/>
               {/*<SlSocialInstagram style={{width: '26px', height: '26px'}}/>*/}
               {/*<SlSocialTwitter style={{width: '26px', height: '26px'}}/>*/}
@@ -147,10 +174,10 @@ export default function PublicPage({user, liveMode=false}) {
           {/*<Tab flexGrow='1' flexBasis='50%' order={tablessMode ? 0 :user.showTabNftsAsFirst?1:0}>Accounts</Tab>*/}
           {/*<Tab flexGrow='1' flexBasis='50%' order={tablessMode ? 0 :user.showTabNftsAsFirst?0:1}>NFTs</Tab>*/}
           <Tabs size={tpl.tabsSpec.size || 'md'} colorScheme={tpl.tabsSpec.colorScheme} variant={tpl.tabsSpec.variant} isFitted index={tabIdx} onChange={setTabIdx} sx={{w:'350px'}}>
-            <TabList hidden={!willShowAccts || !willShowNfts} sx={{mb:'10px'}}>
+            <TabList hidden={!willShowAccts || !willShowNfts} sx={{mb:'10px'}} color={socLinksColor}>
               {/* REMINDER: css prop order={} is unrelated to/independent of tabIdx */}
-              <Tab order={tablessMode ? 0 :user.showTabNftsAsFirst?1:0}>Accounts</Tab>
-              <Tab order={tablessMode ? 0 :user.showTabNftsAsFirst?0:1}>NFTs</Tab>
+              <Tab order={tablessMode ? 0 :user.showTabNftsAsFirst?1:0} color={socLinksColor}>Accounts</Tab>
+              <Tab order={tablessMode ? 0 :user.showTabNftsAsFirst?0:1} color={socLinksColor}>NFTs</Tab>
             </TabList>
             <TabPanels sx={{display: 'flex', justifyContent: 'center'}}>
               {willShowAccts && (
@@ -160,10 +187,10 @@ export default function PublicPage({user, liveMode=false}) {
               )}
               {willShowNfts && (
                 <TabPanel w='95%' p={0}>
-                  <HFlex justify='center' mb={2}>
-                    <Button variant='link' isActive={gridCols===1} onClick={()=>{setGridCols(1)}}><TbDotsVertical/></Button>
-                    <Button variant='link' isActive={gridCols===2} onClick={()=>{setGridCols(2)}}><TbGripVertical/></Button>
-                    <Button variant='link' isActive={gridCols===3} onClick={()=>{setGridCols(3)}}><TbGridDots/></Button>
+                  <HFlex justify='center' mb={2} color={socLinksColor}>
+                    <Button variant='link' isActive={gridCols===1} onClick={()=>{setGridCols(1)}}><TbDotsVertical color={socLinksColor}/></Button>
+                    <Button variant='link' isActive={gridCols===2} onClick={()=>{setGridCols(2)}}><TbGripVertical color={socLinksColor}/></Button>
+                    <Button variant='link' isActive={gridCols===3} onClick={()=>{setGridCols(3)}}><TbGridDots color={socLinksColor}/></Button>
                   </HFlex>
                   <NftLinks user={user} tpl={tpl} cols={gridCols}/>
                 </TabPanel>
@@ -175,12 +202,11 @@ export default function PublicPage({user, liveMode=false}) {
           {/*  <AcctLinks user={user} tpl={tpl}/>*/}
           {/*</VFlexCC>*/}
 
-          <VFlexCC mt={2} w='100%'>
+          <VFlexCC mt='auto' w='100%'>
             {user.showCszCredit && (<Link to={'http://localhost:3002'}>CoinStarz</Link>)}
           </VFlexCC>
         </VFlexCS>
-      </VFlexCS>
-    )}
+    </Box>)}
     {liveMode && user.showNsfwWarning && !passedNsfwWarning && (
       <Portal>
         <VFlexCC sx={{...abs0(), position:'fixed', bgColor:'white',}} gap={3}>

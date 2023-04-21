@@ -16,18 +16,10 @@ import {AddIcon, DeleteIcon, EditIcon, ExternalLinkIcon} from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom';
 import AppNav from './navs/AppNav.js';
 import {HFlex, VFlex, VFlexCC} from './bits/UtilityTags.js';
-import BignetPng from "assets/pictures/bignet.png";
 import HoCSZPng from "assets/HoCSZ.png";
 import HoIGPng from "assets/HoIG.png";
 import FedCSZPng from "assets/FedCSZ.png";
 import CreatorsPng from "assets/Creators.png";
-import BigonePng from "assets/pictures/bigone.png";
-import BoatPng from "assets/pictures/boat.png";
-import LassoPng from "assets/pictures/lasso.png";
-import MenuiconPng from "assets/pictures/menuicon.png";
-import ModeratePng from "assets/pictures/moderate.png";
-import SignificantPng from "assets/pictures/significant.png";
-import SmallnetPng from "assets/pictures/smallnet.png";
 import AppFooter from './navs/AppFooter.js';
 import {motion, AnimatePresence} from "framer-motion";
 import {useAppStore} from "../services/useAppStore";

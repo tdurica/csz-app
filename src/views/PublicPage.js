@@ -29,6 +29,7 @@ import {useAuth} from "../services/useAuth";
 import SocLinkIcon from "../hooks/SocLinkIcon/SocLinkIcon";
 import {templateDefs} from "../data/templateDefs";
 import {TbDotsVertical, TbGridDots, TbGripVertical} from "react-icons/tb";
+import {MdOutlineMarkunreadMailbox} from "react-icons/md";
 import {getBackgroundSx} from "./TemplatePicker/TemplatePicker";
 import {clientOrigin, desktopSidebarWidth} from "../data/constants";
 import {useMutationObservable} from "../hooks/useMutationObservable";
@@ -133,7 +134,9 @@ export default function PublicPage({user, liveMode=false}) {
   const onAppMainMutation = useCallback((mutationList) => {
     if(scrollbarVisible(scrollableRef.current)){setScrollVis('1');
     }else{setScrollVis('0');}}, [setScrollVis]);
-  useMutationObservable(scrollableRef.current, onAppMainMutation);
+  if(scrollableRef.current){
+    useMutationObservable(scrollableRef.current, onAppMainMutation);
+  }
 
   return (<>
     {passedNsfwWarning && (

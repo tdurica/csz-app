@@ -128,4 +128,39 @@ export const templateDefs = [
       shadow:'dark-lg'
     },
   },
+  {
+    label: 'Custom 69420Blaze IT',
+    "backgroundSpec": {
+      "bgType": "gradient",
+      "bgFlatColor": "#0075ff",
+      "bgGrdColor1": "#cd5959",
+      "bgGrdColor2": "#1511ff",
+      "bgGrdDir": "235deg",
+    },
+    "headlinesSpec": {
+      "font": {
+        "fontFamily": "inter",
+        "fontWeight": "500",
+        "fontSize": "14px"
+      },
+      "color": "#FFFFFF"
+    },
+    "tabsSpec": {
+      "size": "sm",
+      "variant": "solid-rounded",
+      "colorScheme": "messenger"
+    },
+    "acctCardSpec": {
+      "borderRadius": "19px",
+      "color": "#000000",
+      "bgColor": "#53a3ff",
+      "shadow": "dark-lg"
+    },
+    "nftCardSpec": {
+      "borderRadius": "5px",
+      "color": "#2b4d80",
+      "bgColor": "#53a3ff",
+      "shadow": "dark-lg"
+    }
+  }
 ]

@@ -17,7 +17,7 @@ export default function TbSettings() {
       <Divider my={2}/>
       <EditableCtrl propName='greeting' label='Greeting'/>
       <Divider my={2}/>
-      <EditableCtrl propName='publicHandle' label='Public Link Handle'/>
+      <EditableCtrl propName='publicHandle' label='Public Link Handle' forceLowerCase/>
       <Divider my={2}/>
       {/*Note: bio is a textarea, which has an issue where expanding
          the field vertically overlaps over elements below */}

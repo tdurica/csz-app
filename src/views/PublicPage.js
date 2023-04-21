@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 // import { Link } from "react-router-dom";
 import {BtnCopyToClipboard, HFlex, HFlexCC, HFlexSC, TextXs, VFlex, VFlexCC, VFlexCS} from './bits/UtilityTags.js';
 import {
@@ -30,7 +30,8 @@ import SocLinkIcon from "../hooks/SocLinkIcon/SocLinkIcon";
 import {templateDefs} from "../data/templateDefs";
 import {TbDotsVertical, TbGridDots, TbGripVertical} from "react-icons/tb";
 import {getBackgroundSx} from "./TemplatePicker/TemplatePicker";
-import {desktopSidebarWidth} from "../data/constants";
+import {clientOrigin, desktopSidebarWidth} from "../data/constants";
+import {useMutationObservable} from "../hooks/useMutationObservable";
 
 function AcctLinks({user, tpl}){
   return user.acctLinks.map((v, i, a) => v.show && (
@@ -65,7 +66,7 @@ function NftLinks({user, cols, tpl}){
           <Center align='center'>
             <Image src={v.imageUrl} />
           </Center>
-          <Box fontSize='18px' fontFamily='raleway'>{v.label}</Box>
+          <Box fontSize='18px' wordBreak='break-word' fontFamily='raleway'>{v.label}</Box>
         </VFlex>
       </Link>
     ))}
@@ -106,6 +107,9 @@ function SocLinks({user, tpl}){
 //   )
 //
 // }
+function scrollbarVisible(element) {
+  return element.scrollHeight > element.clientHeight;
+}
 
 export default function PublicPage({user, liveMode=false}) {
   const bypassNsfwWarning = !!(!user.showNsfwWarning || !liveMode)
@@ -123,10 +127,17 @@ export default function PublicPage({user, liveMode=false}) {
   useEffect(()=>{
     if(tablessMode){ setTabIdx(tablessMode ? 0 : user.showTabNftsAsFirst?1:0); }
   },[user])
-  console.log('tabIdx ',tabIdx)
+
+  const scrollableRef = useRef(null);
+  const [scrollVis, setScrollVis] = useState('0');
+  const onAppMainMutation = useCallback((mutationList) => {
+    if(scrollbarVisible(scrollableRef.current)){setScrollVis('1');
+    }else{setScrollVis('0');}}, [setScrollVis]);
+  useMutationObservable(scrollableRef.current, onAppMainMutation);
+
   return (<>
     {passedNsfwWarning && (
-      <Box
+      <Box ref={scrollableRef}
         sx={{
           height: '100%',
           overflowY: "scroll",
@@ -135,8 +146,8 @@ export default function PublicPage({user, liveMode=false}) {
           display: 'flex',
           flexDirection: 'column',
           flexBasis: '100vh',
-          backgroundColor: `#F9F9FA`,//brand.bg
-          // backgroundColor: `rgba(17,22,35,${scrollVis})`,//brand.bg
+          //backgroundColor: `#000000`,//brand.bg
+          backgroundColor: `rgba(17,22,35,${scrollVis})`,//brand.bg
           alignItems: 'center',
           "&::-webkit-scrollbar": {
             width: "6px",
@@ -203,7 +214,7 @@ export default function PublicPage({user, liveMode=false}) {
           {/*</VFlexCC>*/}
 
           <VFlexCC mt='auto' w='100%'>
-            {user.showCszCredit && (<Link to={'http://localhost:3002'}>CoinStarz</Link>)}
+            {user.showCszCredit && (<Link href={clientOrigin}>CoinStarz</Link>)}
           </VFlexCC>
         </VFlexCS>
     </Box>)}

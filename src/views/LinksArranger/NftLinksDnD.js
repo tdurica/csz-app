@@ -98,15 +98,15 @@ export default function NftLinksDnD(){
                       <Box h='100%' bgColor='gray.700'/>
                       <SimpleGrid
                         templateAreas={useBreakpointValue({
-                          base: `"icon label label"
-                                 "icon label label"
-                                 "c1 c2 c3"`,
-                          md: `"icon label c1 c2 c3"
-                               "icon label  c1 c2 c3"`,
+                          base: `"icon label eyebin updn"
+                                 "icon label  eyebin updn"
+                                 "icon label  eyebin updn"`,
+                          md: `"icon label eyebin updn"
+                               "icon label  eyebin updn"`,
                         })}
                         templateColumns={useBreakpointValue({
-                          base: '50px 1fr 1fr',
-                          md: '50px 60% 1fr 1fr 1fr',
+                          base: '50px auto 30px 40px',
+                          md: '50px auto 30px 40px',
                         })}
                         w={useBreakpointValue({
                           base: 'auto',
@@ -116,35 +116,30 @@ export default function NftLinksDnD(){
                         <GridItem area={'icon'} as={Center}>
                           <Image src={v.imageUrl} boxSize='50px'/>
                         </GridItem>
-                        <GridItem area={'label'} as={Box} fontWeight='bold'>
+                        <GridItem area={'label'} as={Box} fontWeight='bold' pl='4px' alignSelf='center'>
                           {v.label}
                         </GridItem>
-                        {/*<GridItem area={'link'} as={Box} fontSize='12px'>*/}
-                        {/*  {v.url}*/}
-                        {/*</GridItem>*/}
-                        <GridItem area={'c1'} as={Center}>
-                          <Icon as={FaTrash} cursor='pointer' color='gray' _hover={{color:'black'}} onClick={()=>{
+                        <GridItem area={'eyebin'} as={VFlexCC} gap={1} my={1} justify='space-evenly'>
+                          <Button size='xs' variant='outline' color={v.show?'green':'red'} onClick={()=>{
+                            let mod = [...items];mod[i] = {...items[i]};mod[i].show = !v.show;
+                            useAuth.getState()._updateUser({nftLinks:mod}).catch()
+                          }}><FaRegEye/></Button>
+                          <Button size='xs' variant='outline' onClick={()=>{
                             const itemsMod = items.filter((vv,i,a)=>{
                               return vv.label+vv.imageUrl !== v.label+v.imageUrl
                             });
                             setItems(itemsMod);
-                            useAuth.getState()._updateUser({nftLinks:itemsMod}).then()
-                          }}/>
+                            useAuth.getState()._updateUser({nftLinks:itemsMod}).catch()
+                          }}><FaTrash/></Button>
                         </GridItem>
-                        <GridItem area={'c2'} as={Center}>
-                          <FaRegEye color={v.show?'green':'red'} onClick={()=>{
-                            let mod = [...items];mod[i] = {...items[i]};mod[i].show = !v.show;
-                            useAuth.getState()._updateUser({nftLinks:mod}).then()
-                          }}/>
-                        </GridItem>
-                        <GridItem area={'c3'} as={VFlexCC} gap={1}>
-                          <Button size='xs' h='14px' variant='unstyled' visibility={i<1?'hidden':'visible'} onClick={()=>{
+                        <GridItem area={'updn'} as={VFlexCC} gap={1} justify='space-evenly'>
+                          <Button display='flex' h='100%' size='xs' variant='unstyled' visibility={i<1?'hidden':'visible'} onClick={()=>{
                             if(i>0) {
                               moveItem(i, i-1);
                               onDragEnd({source:{index:i}, destination:{index:i-1}})
                             }
                           }}><ChevronUpIcon/></Button>
-                          <Button size='xs' h='14px' variant='unstyled' visibility={i>=items.length-1?'hidden':'visible'} onClick={()=>{
+                          <Button display='flex' h='100%' size='xs' variant='unstyled' visibility={i>=items.length-1?'hidden':'visible'} onClick={()=>{
                             if(i<items.length-1){
                               moveItem(i, i+1);
                               onDragEnd({source:{index:i}, destination:{index:i+1}})

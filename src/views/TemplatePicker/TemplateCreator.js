@@ -338,7 +338,7 @@ export default function TemplateCreator({onClose}){
   }
 
   return (
-    <VFlex border='1px solid gray' bgColor='gray.50' borderRadius='8px' p={3} gap={3} w='360px'>
+    <VFlex border='1px solid gray' bgColor='gray.50' borderRadius='8px' p={3} my={3} gap={3} w={['348px','400px',]}>
       <HFlexSC justify='space-between' mb={1}>
         <Heading size='md' my={1}>Create a Theme</Heading><Button size='sm' onClick={onClose}>X</Button>
       </HFlexSC>

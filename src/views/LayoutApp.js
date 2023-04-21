@@ -15,7 +15,7 @@ import { desktopSidebarWidth } from 'data/constants.js';
 import { useMutationObservable } from '../hooks/useMutationObservable.js';
 import BrandLogoSvg from "../assets/logos/brand-logo.svg";
 import {SBNavLink} from "./navs/SBNavLink";
-import {HFlexSC} from "./bits/UtilityTags";
+import {HFlexSC,VFlex} from "./bits/UtilityTags";
 import {useScroll} from "framer-motion";
 import {appState, useAppStore} from "../services/useAppStore";
 
@@ -58,6 +58,11 @@ export default function LayoutApp(props) {
   document.documentElement.dir = "ltr";
   // Chakra Color Mode
   const [isMobile, isDesktop] = useDeviceMode()
+  const limitWidth = {
+    base:'99%',
+    md:'99%',
+    lg:'660px',
+  }
 
   // const route = useRoutes()
   return (
@@ -69,15 +74,16 @@ export default function LayoutApp(props) {
              height: '100%',
              overflowY: "scroll",
              overflowX: "hidden",
-             marginLeft:isDesktop?desktopSidebarWidth:'0',
-             paddingRight:isDesktop?'10px':'1px',
+             // marginLeft:isDesktop?desktopSidebarWidth:'0',
+             paddingRight:isDesktop?'7px':'1px',
              paddingTop:'70px',
              display: 'flex',
              flexDirection: 'column',
              flexBasis: '100vh',
              backgroundColor: `#F9F9FA`,//brand.bg
              // backgroundColor: `rgba(17,22,35,${scrollVis})`,//brand.bg
-             justifyContent: 'begin',
+             justifyContent: 'start',
+             alignItems: 'center',
              "&::-webkit-scrollbar": {
                width: "6px",
                backgroundColor: 'inherit',
@@ -91,7 +97,13 @@ export default function LayoutApp(props) {
                borderRadius: "24px",
              },
            }}>
+        <VFlex sx={{
+          w: limitWidth,
+          justifyContent: 'center',
+        }}>
           <Outlet/>
+
+        </VFlex>
       </Box>
     </>
   );

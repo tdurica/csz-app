@@ -1,10 +1,11 @@
 import {
   ButtonGroup, Editable, EditablePreview, EditableInput, EditableTextarea, Flex, Heading, Box, SimpleGrid,
-  IconButton, Input, Tooltip, useEditableControls, useBreakpointValue,
+  IconButton, Input, Tooltip, useEditableControls, useBreakpointValue, Text,
 } from "@chakra-ui/react";
 import {CheckIcon, CloseIcon, EditIcon} from "@chakra-ui/icons";
 import {useAuth} from "services/useAuth";
 import {VFlex} from "../bits/UtilityTags";
+import {useState} from "react";
 
 function EditableControls() {
   const { isEditing, getSubmitButtonProps, getCancelButtonProps, getEditButtonProps
@@ -17,11 +18,25 @@ function EditableControls() {
   );
 }
 
-export default function EditableCtrl({propName, label, textarea=false, sx={}}) {
-  const propValue = useAuth(s=>s.user[propName])
+export default function EditableCtrl({propName, label, textarea=false, forceLowerCase=false, sx={}}) {
+  const initVal = useAuth(s=>s.user[propName])
+  const [fieldVal, setFieldVal] = useState(String(initVal))
+  const [msg, setMsg] = useState({color:'',text:''})
 
   const onSubmit = async(value)=>{
-    useAuth.getState()._updateUser({[propName]:value}).then()
+    if(value===initVal){return}
+    useAuth.getState()._updateUser({[propName]:value}).then((res)=>{
+      if(res.success){
+        setFieldVal(forceLowerCase?value.toLowerCase():value)
+        setTimeout(()=>{setMsg({color:'',text:''})},7000)
+        setMsg({color:'green', text: 'Saved!'})
+      }else{
+        setFieldVal(initVal)
+        //TODO: error feedback logic here
+        setTimeout(()=>{setMsg({color:'',text:''})},7000)
+        setMsg({color:'red', text: res.error ? res.error : 'Could not store the provided value'})
+      }
+    })
   }
 
   const rsvWidth = useBreakpointValue(['250px','320px','380px'])
@@ -30,7 +45,11 @@ export default function EditableCtrl({propName, label, textarea=false, sx={}}) {
     <Heading size='sm'>{label}</Heading>
     <Editable
       as={SimpleGrid}
-      defaultValue={propValue} isPreviewFocusable={true} selectAllOnFocus={false}
+      defaultValue={initVal} isPreviewFocusable={true} selectAllOnFocus={false}
+      value={fieldVal}
+      onChange={(v)=>{
+        setFieldVal(forceLowerCase?v.toLowerCase():v)
+      }}
       onSubmit={onSubmit}
       sx={{
         borderRadius:'10px',mt:1, h:'42px',
@@ -63,5 +82,6 @@ export default function EditableCtrl({propName, label, textarea=false, sx={}}) {
       {/*<Input py={2} px={4} as={textarea?EditableTextarea:EditableInput} />*/}
       <EditableControls />
     </Editable>
+    <Box h={3} ml={2} mt={1} fontSize='10px' color={msg.color}>{msg.text}</Box>
   </VFlex>);
 }

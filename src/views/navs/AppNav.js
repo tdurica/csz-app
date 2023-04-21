@@ -52,7 +52,7 @@ export default function AppNav(props) {
   const isMobile = useBreakpointValue({base:true, md:false})
   const toggleAppNavDrawer=()=>appState().set_appNavDrawerOpen(!appState().appNavDrawerOpen)
 
-  const sxFixedBar = {zIndex:'1000',position:"fixed", w:'100vw', h:'70px', top:"0", left:"0", right:"0",}
+  const sxFixedBar = {zIndex:'1000',position:"fixed", w:'100vw', h:'75px', top:"0", left:"0", right:"0",}
   const sxNavBtn = {
     cursor:'pointer',
     color: 'global.bg',

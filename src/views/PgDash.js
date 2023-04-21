@@ -38,10 +38,10 @@ export default function PgDash() {
         </TabList>
 
         <TabPanels>
-          <TabPanel>
+          <TabPanel p={[1,2,4]}>
             <TbDesigner/>
           </TabPanel>
-          <TabPanel>
+          <TabPanel p={[1,2,4]}>
             <TbSettings/>
           </TabPanel>
         </TabPanels>

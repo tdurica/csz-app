@@ -2,12 +2,13 @@ export const SUPPORTED_CHAIN_IDS = [1, 4, 3, 42, 5, 56, 97, 1337]
 export const desktopSidebarWidth = '20px'
 
 export const PHASE=3;
+export const clientOrigin=window.location.origin;
 // export const serverOrigin='http://coinstarz.com:5000';
-// export const clientOrigin='http://coinstarz.com';
-export const serverOrigin='http://td1.co:5000';
-export const clientOrigin='http://csz420.netlify.app';
+export const serverOrigin='https://td1.co:5000';
 // export const serverOrigin='http://localhost:5000';
+
 // export const clientOrigin='http://localhost:3002';
+// export const clientOrigin='http://coinstarz.com';
 
 //matching def in csz-api/models/UserProfile.js
 export const enumCurrencies = [

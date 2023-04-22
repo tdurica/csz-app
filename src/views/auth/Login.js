@@ -49,7 +49,7 @@ export default function Login({  }) {
     const {email, password} = values;
     //login
     if(tabIdx===0){
-      const res = await fetch(`http://localhost:5000/auth/login`, {
+      const res = await fetch(`${serverOrigin}/auth/login`, {
         method:'POST', headers, body: JSON.stringify({email, password}),
       }).then(r=>r.json()).catch((e)=>{console.error(e);return {success:false}});
       if(res && res.mustVerify){
@@ -81,7 +81,7 @@ export default function Login({  }) {
     setIsSubmittingVerif(true)
     const emailVerifCode = parseInt(verifyEmailInput.current.value.trim())
     const headers = {"Content-Type": "application/json"};
-    const res = await fetch(`http://localhost:5000/auth/verify`, {
+    const res = await fetch(`${serverOrigin}/auth/verify`, {
       method:'POST', headers, body: JSON.stringify({emailVerifCode}),
     }).then((r)=>r.json()).catch((e)=>{console.error(e);return {success:false}});
     setIsSubmittingVerif(false)

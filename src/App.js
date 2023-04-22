@@ -15,6 +15,7 @@ import PgNotFound from './views/PgNotFound.js';
 import { useAuth } from './services/useAuth.js';
 import {useScroll} from "framer-motion";
 import {appState} from "./services/useAppStore";
+import {serverOrigin} from "./data/constants";
 // const AppProvider = React.lazy(() =>
 //   import(/* webpackChunkName: "views-app" */ './AppProvider.js')
 // );
@@ -43,7 +44,7 @@ const router = (isAuthenticated)=>createBrowserRouter([
     path: "*", element: <PgNotFound />, loader: async (e)=> {
       // console.log(e.params['*'])
       const headers = {"Content-Type": "application/json"};
-      const res = await fetch(`http://localhost:5000/api/public/${String(e.params['*']).toLowerCase()}`, {
+      const res = await fetch(`${serverOrigin}/api/public/${String(e.params['*']).toLowerCase()}`, {
         method:'GET', headers,}).then((r)=> r.json()).catch((e)=>e);
       return res.success ? res.user : false
     },

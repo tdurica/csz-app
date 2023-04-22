@@ -1,3 +1,5 @@
+import {serverOrigin} from "../data/constants";
+
 const [__,__E,__W] = [console.log,console.error,console.warn];
 import { create } from 'zustand';
 import produce from 'immer';
@@ -62,7 +64,7 @@ export const useAuth = create((set, get) => {
     },
     _call: async (endpoint, method, headers={}, payload={}) => {
       headers["Content-Type"] = "application/json";
-      const res = await fetch(`http://localhost:5000/${endpoint}`, {
+      const res = await fetch(`${serverOrigin}/${endpoint}`, {
         method, headers, body: JSON.stringify(payload),
       }).then((r)=> r.json()).catch((e)=>__E(e));
       if(res.message){ console.log(res.message) }
@@ -79,7 +81,7 @@ export const useAuth = create((set, get) => {
       if(method==='PUT' || method==='POST'){
         opts.body = JSON.stringify(payload)
       }
-      const response = await fetch(`http://localhost:5000/${endpoint}`, opts)
+      const response = await fetch(`${serverOrigin}/${endpoint}`, opts)
       .then((r)=> r.json()).catch((e)=>__E(e));
       console.log(endpoint,payload,response)
       return response
@@ -87,7 +89,7 @@ export const useAuth = create((set, get) => {
     _register: async (email, password) => {
       const payload = {email, password};
       const headers = {"Content-Type": "application/json"};
-      const res = await fetch(`http://localhost:5000/auth/register`, {
+      const res = await fetch(`${serverOrigin}/auth/register`, {
         method:'POST', headers, body: JSON.stringify(payload),
       }).then((r)=> r.json()).catch((e)=>__E(e));
       return res
@@ -95,7 +97,7 @@ export const useAuth = create((set, get) => {
     _login: async (email, password) => {
       const payload = {email, password};
       const headers = {"Content-Type": "application/json"};
-      return await fetch(`http://localhost:5000/auth/login`, {
+      return await fetch(`${serverOrigin}/auth/login`, {
         method:'POST', headers, body: JSON.stringify(payload),
       }).then(async (r)=> {
         const res = await r.json()
@@ -124,7 +126,7 @@ export const useAuth = create((set, get) => {
     },
     _verify: async (emailVerifCode) => {
       const headers = {"Content-Type": "application/json"};
-      const res = await fetch(`http://localhost:5000/auth/verify`, {
+      const res = await fetch(`${serverOrigin}/auth/verify`, {
         method:'POST', headers, body: JSON.stringify({emailVerifCode}),
       }).then((r)=> r.json()).catch((e)=>__E(e));
 
@@ -158,7 +160,7 @@ export const useAuth = create((set, get) => {
         await get()._logout(); return false;
       }
       const headers = {"Content-Type": "application/json"};
-      const res = await fetch(`http://localhost:5000/auth/refreshToken`, {
+      const res = await fetch(`${serverOrigin}/auth/refreshToken`, {
         method:'POST', headers, body: JSON.stringify({refreshToken:refreshToken.get}),
       }).then((r)=> r.json()).catch((e)=>__W(e));
 
@@ -190,7 +192,7 @@ export const useAuth = create((set, get) => {
 
       if(accessToken) {
         const headers = {"Content-Type": "application/json", "Authorization": `Bearer ${accessToken}`};
-        const res = await fetch(`http://localhost:5000/auth/logout`, {
+        const res = await fetch(`${serverOrigin}/auth/logout`, {
           method:'POST', headers, body: JSON.stringify({accessToken}),
         }).then((r)=> r.json()).catch((e)=>__E(e));
       }

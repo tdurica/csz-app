@@ -1,4 +1,4 @@
-import {$$} from "../functions/utils/stripeUtils.mjs";
+import {$$} from "../functions-cellar/utils/stripeUtils.mjs";
 
 export const miscEvents = {
   'balance.available':async()=>{

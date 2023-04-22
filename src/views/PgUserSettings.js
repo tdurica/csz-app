@@ -3,7 +3,7 @@ import { Box, Grid, Heading, Spinner, Text, } from '@chakra-ui/react';
 import { BtnXs, HFlexSC, IBtn } from './bits/UtilityTags.js';
 import { authState } from '../services/useAuth.js';
 import { MdCancel, MdCheck } from 'react-icons/md';
-import { sendPasswordResetEmail } from 'firebase/auth';
+// import { sendPasswordResetEmail } from 'firebase/auth';
 
 
 export default function PgUserSettings() {
@@ -17,24 +17,24 @@ export default function PgUserSettings() {
     setDidSendMessage('')
   }
   async function onConfirmPwReset(){
-    setIsLoading(true)
-    const res = await sendPasswordResetEmail(
-      authState().auth,
-      authState().user.email
-    ).then((r)=>{
-      return 'success'
-    }).catch((e)=>{
-      return 'error'
-    })
-    if(res==='success'){
-      setDidSendMessage('Email Sent!')
-      setIsLoading(false)
-      setTimeout(()=>{
-        onCancelPwReset(false)
-      },3000)
-    }else{
-      setDidSendMessage('Could not send email, please try again.')
-    }
+    // setIsLoading(true)
+    // const res = await sendPasswordResetEmail(
+    //   authState().auth,
+    //   authState().user.email
+    // ).then((r)=>{
+    //   return 'success'
+    // }).catch((e)=>{
+    //   return 'error'
+    // })
+    // if(res==='success'){
+    //   setDidSendMessage('Email Sent!')
+    //   setIsLoading(false)
+    //   setTimeout(()=>{
+    //     onCancelPwReset(false)
+    //   },3000)
+    // }else{
+    //   setDidSendMessage('Could not send email, please try again.')
+    // }
   }
   function onShowPwResetConfirm(){
     setIsLoading(false)

@@ -4,7 +4,7 @@ export const desktopSidebarWidth = '20px'
 export const PHASE=3;
 export const clientOrigin=window.location.origin;
 // export const serverOrigin='http://coinstarz.com:5000';
-export const serverOrigin='https://td1.co:5000';
+export const serverOrigin='https://td1.co';
 // export const serverOrigin='http://localhost:5000';
 
 // export const clientOrigin='http://localhost:3002';

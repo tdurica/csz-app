@@ -29,7 +29,7 @@ import {useAuth} from "../services/useAuth";
 import SocLinkIcon from "../hooks/SocLinkIcon/SocLinkIcon";
 import {templateDefs} from "../data/templateDefs";
 import {TbDotsVertical, TbGridDots, TbGripVertical} from "react-icons/tb";
-import {MdOutlineMarkunreadMailbox} from "react-icons/md";
+import {MdOutlineImageSearch, MdOutlineMarkunreadMailbox} from "react-icons/md";
 import {getBackgroundSx} from "./TemplatePicker/TemplatePicker";
 import {clientOrigin, desktopSidebarWidth} from "../data/constants";
 import {useMutationObservable} from "../hooks/useMutationObservable";
@@ -65,7 +65,11 @@ function NftLinks({user, cols, tpl}){
       <Link key={i} isExternal href={v.marketUrl} color='black'>
         <VFlex sx={{h: 'auto', p: '3px', alignItems: 'center', ...tpl.nftCardSpec}}>
           <Center align='center'>
-            <Image src={v.imageUrl} />
+            <Image src={v.imageUrl} fallback={
+              <Box boxSize={70} mt={2} borderRadius={tpl.nftCardSpec.borderRadius} border={`1px solid`}>
+                <MdOutlineImageSearch style={{width:'100%',height:'100%'}}/>
+              </Box>}
+            />
           </Center>
           <Box fontSize='18px' wordBreak='break-word' fontFamily='raleway'>{v.label}</Box>
         </VFlex>

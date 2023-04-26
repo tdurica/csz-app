@@ -113,9 +113,6 @@ function scrollbarVisible(element) {
 }
 
 export default function PublicPage({user, liveMode=false}) {
-  const bypassNsfwWarning = !!(!user.showNsfwWarning || !liveMode)
-  const [passedNsfwWarning, setPassedNsfwWarning] = useState(bypassNsfwWarning);
-  const [gridCols, setGridCols] = useState(3);
   const tpl = user.template === 'Custom'
     ? user.customTpl
     : templateDefs.find(v=>v.label===user.template);
@@ -125,18 +122,24 @@ export default function PublicPage({user, liveMode=false}) {
   const willShowNfts = user.showTabNfts && user.nftLinks.length>0;
   const tablessMode = !!(!willShowAccts || !willShowNfts)
   const [tabIdx, setTabIdx] = useState(tablessMode ? 0 : user.showTabNftsAsFirst?1:0);
+  const scrollableRef = useRef(null);
+  const [scrollVis, setScrollVis] = useState('0');
+  const bypassNsfwWarning = !!(!user.showNsfwWarning || !liveMode)
+  const [passedNsfwWarning, setPassedNsfwWarning] = useState(bypassNsfwWarning);
+  const [gridCols, setGridCols] = useState(3);
+
+
+  const onAppMainMutation = useCallback((mutationList) => {
+    if(scrollbarVisible(scrollableRef.current)){setScrollVis('1');
+    }else{setScrollVis('0');}}, [setScrollVis]);
+
   useEffect(()=>{
     if(tablessMode){ setTabIdx(tablessMode ? 0 : user.showTabNftsAsFirst?1:0); }
   },[user])
 
-  const scrollableRef = useRef(null);
-  const [scrollVis, setScrollVis] = useState('0');
-  const onAppMainMutation = useCallback((mutationList) => {
-    if(scrollbarVisible(scrollableRef.current)){setScrollVis('1');
-    }else{setScrollVis('0');}}, [setScrollVis]);
-  if(scrollableRef.current){
+  // if(scrollableRef.current){
     useMutationObservable(scrollableRef.current, onAppMainMutation);
-  }
+  // }
 
   return (<>
     {passedNsfwWarning && (
@@ -170,8 +173,8 @@ export default function PublicPage({user, liveMode=false}) {
         <VFlexCS gap={1} sx={{w: '360px', h: '100%', py: '12px'}}>
           {user.image && <Avatar size='xl' src={user.image}/>}
           <VFlexCS gap={1} sx={{...tpl.headlinesSpec.font, color: tpl.headlinesSpec.color}}>
-            <HFlexCC>{user.name}</HFlexCC>
-            <HFlexCC textAlign='center'>{user.greeting}</HFlexCC>
+            {user.name&&(<HFlexCC textAlign='center'>{user.name}</HFlexCC>)}
+            {user.greeting&&(<HFlexCC textAlign='center'>{user.greeting}</HFlexCC>)}
           </VFlexCS>
           {willShowSocLinks && (
             <HFlexSC gap={1} fill={socLinksColor}>

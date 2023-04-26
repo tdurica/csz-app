@@ -1,10 +1,10 @@
 export const SUPPORTED_CHAIN_IDS = [1, 4, 3, 42, 5, 56, 97, 1337]
 export const desktopSidebarWidth = '20px'
-
+const {NODE_ENV,REACT_APP_SERVER_ORIGIN_DEV,REACT_APP_SERVER_ORIGIN_PROD} = process.env
 export const PHASE=3;
 export const clientOrigin=window.location.origin;
 // export const serverOrigin='http://coinstarz.com:5000';
-export const serverOrigin='https://td1.co';
+export const serverOrigin = (NODE_ENV==='development') ? REACT_APP_SERVER_ORIGIN_DEV : REACT_APP_SERVER_ORIGIN_PROD;
 // export const serverOrigin='http://localhost:5000';
 
 // export const clientOrigin='http://localhost:3002';

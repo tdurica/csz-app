@@ -31,6 +31,7 @@ export const useAuth = create((set, get) => {
     userSettings: userSettingsDefaults,
     lnpUserInfo: lnpUserInfoDefaults,
     init: async() => {
+      if(window.location.pathname.substring(0,3)==='/u/'){return;}
       // debugger;
       await ls.initSessionStorageSync().then()
       const {accessToken, refreshToken}  = jwt.all()

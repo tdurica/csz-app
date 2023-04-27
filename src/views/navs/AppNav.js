@@ -1,27 +1,26 @@
 import {
-  Box,
-  Portal,
-  Center,
-  Badge,
-  Link,
-  Button,
-  Image,
-  MenuButton,
-  Menu,
-  MenuList,
-  MenuDivider,
-  MenuItem,
   Avatar,
-  IconButton,
-  useBreakpointValue,
+  Badge,
+  Box,
+  Button,
+  Center,
   Grid,
   GridItem,
+  IconButton,
+  Image,
+  Link,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Portal,
+  useBreakpointValue,
 } from '@chakra-ui/react';
-import React, {useEffect, useRef, useState} from 'react';
-import {HFlex, HFlexCC, HFlexSC, IBtn, VFlexCC} from '../bits/UtilityTags.js';
-import { NavLink, useNavigate,Outlet, useLocation,  } from 'react-router-dom';
-import { useDeviceMode } from '../../theme/foundations/breakpoints.js';
-import { FaUserCircle } from 'react-icons/fa';
+import React from 'react';
+import {HFlex, VFlexCC} from '../bits/UtilityTags.js';
+import {NavLink, Outlet, useLocation, useNavigate,} from 'react-router-dom';
+import {FaUserCircle} from 'react-icons/fa';
 // import { useAtom } from 'jotai';
 // import { appNavDrawerOpenAtom } from '../../services/atoms.js';
 import BrandLogoTitle from "assets/CSZWhiteLogo.png";
@@ -29,14 +28,13 @@ import BrandLogoTitle from "assets/CSZWhiteLogo.png";
 // import { CISVG_FrogeNavBack } from '../../assets/Brand.js';
 import {appState, useAppStore} from '../../services/useAppStore.js';
 import {ExternalLinkIcon, HamburgerIcon} from '@chakra-ui/icons';
-import { useAuth, authState } from '../../services/useAuth.js';
+import {authState, useAuth} from '../../services/useAuth.js';
 import AuthModal from '../auth/AuthModal.js';
 import {createBrowserHistory} from "history";
-import {motion, useScroll } from "framer-motion";
 import {clientOrigin} from "../../data/constants";
-import {abs} from "../bits/cssHelpers";
-const history = createBrowserHistory();
+import {adminRoutes} from "../../App";
 
+const history = createBrowserHistory();
 
 export default function AppNav(props) {
   const navigate = useNavigate();
@@ -46,7 +44,6 @@ export default function AppNav(props) {
   const user = useAuth(s=>s.user)
   const isWindowScrolled = useAppStore(s=>s.isWindowScrolled)
   const isAppMainScrolled = useAppStore(s=>s.isAppMainScrolled)
-  const adminRoutes = ['/dash','/settings','/subscriptions','/wallet-history','/wallet-history',]
   const isPublicRoute = adminRoutes.indexOf(location.pathname)<0
   const isAppRoute = adminRoutes.indexOf(location.pathname)>-1
   const isMobile = useBreakpointValue({base:true, md:false})
@@ -69,9 +66,9 @@ export default function AppNav(props) {
   );
 
   const PublicHandleLink = ({...rest})=> user.publicHandle && (
-    <Link as={NavLink} isExternal to={`${clientOrigin}/${user.publicHandle}`} mr={3} color='gray.550' {...rest}>
+    <Link as={NavLink} isExternal to={`${clientOrigin}/u/${user.publicHandle}`} mr={3} color='gray.550' {...rest}>
       <Badge style={{textTransform:'lowercase'}} _hover={{bgColor:'gray.50'}} variant='outline' colorScheme='telegram'>
-        http://coinstarz.com/{user.publicHandle}
+        https://coinstarz.com/u/{user.publicHandle}
       </Badge>
     </Link>
   );

@@ -33,6 +33,7 @@ import {MdOutlineImageSearch, MdOutlineMarkunreadMailbox} from "react-icons/md";
 import {getBackgroundSx} from "./TemplatePicker/TemplatePicker";
 import {clientOrigin, desktopSidebarWidth} from "../data/constants";
 import {useMutationObservable} from "../hooks/useMutationObservable";
+import {useLoaderData} from "react-router-dom";
 
 function AcctLinks({user, tpl}){
   return user.acctLinks.map((v, i, a) => v.show && (
@@ -116,7 +117,8 @@ function scrollbarVisible(element) {
   return element.scrollHeight > element.clientHeight;
 }
 
-export default function PublicPage({user, liveMode=false}) {
+export default function PublicPage({user=false, liveMode=false}) {
+  user = liveMode ? useLoaderData() : user;
   const tpl = user.template === 'Custom'
     ? user.customTpl
     : templateDefs.find(v=>v.label===user.template);

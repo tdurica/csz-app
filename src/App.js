@@ -1,8 +1,6 @@
-import { Box, ChakraProvider, Portal, useDisclosure, useStyleConfig } from '@chakra-ui/react';
-import React, { useEffect, useState, Suspense } from 'react';
-import theme from "theme/theme.js";
+import React, {Suspense, useEffect} from 'react';
 import LayoutApp from './views/LayoutApp.js';
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import {createBrowserRouter, Navigate, RouterProvider, redirect} from 'react-router-dom';
 import AppNav from './views/navs/AppNav.js';
 import PgLanding from './views/PgLanding.js';
 import PgDocs from './views/PgDocs.js';
@@ -12,19 +10,44 @@ import PgUserSettings from './views/PgUserSettings.js';
 import PgSubscriptions from './views/PgSubscriptions.js';
 import PgWalletHistory from './views/PgWalletHistory.js';
 import PgNotFound from './views/PgNotFound.js';
-import { useAuth } from './services/useAuth.js';
+import {useAuth} from './services/useAuth.js';
 import {useScroll} from "framer-motion";
 import {appState} from "./services/useAppStore";
 import {serverOrigin} from "./data/constants";
+import PublicPage from "./views/PublicPage";
 // const AppProvider = React.lazy(() =>
 //   import(/* webpackChunkName: "views-app" */ './AppProvider.js')
 // );
 
+export const adminRoutes = [
+  '/dash', '/settings', '/subscriptions', '/wallet-history',
+]
+export const publicRoutes = [
+  '/', '/login', '/docs', '/404'
+]
+export const publicHandleRoute = [
+  '/u',
+]
 const router = (isAuthenticated)=>createBrowserRouter([
+  { path: "/u/*",
+    element: <PublicPage liveMode={true}/>,
+    loader: async (e)=> {
+      // console.log(e.params['*'])
+      try {
+        const headers = {"Content-Type": "application/json"};
+        const res = await fetch(`${serverOrigin}/api/public/${String(e.params['*']).toLowerCase()}`, {
+          method:'GET', headers,}).then((r)=> r.json()).catch((e)=>e);
+        if(res.success) {return res.user}else{throw Error('profile not found')}
+      } catch (e){
+        return redirect("/404");
+      }
+    }
+  },
   {
     element: <AppNav />,
     children: [
-      { path: "/", element: <PgLanding />, loader: ()=>null, },
+      { path: "/", element: <PgLanding />, },
+      { path: "/404", element: <PgNotFound />, },
       { path: "/login", element: <PgLogin />, },
       { path: "/docs", element: <PgDocs />, },
       {
@@ -41,13 +64,13 @@ const router = (isAuthenticated)=>createBrowserRouter([
     ],
   },
   {
-    path: "*", element: <PgNotFound />, loader: async (e)=> {
+    path: "*", element: <PgNotFound />/*, loader: async (e)=> {
       // console.log(e.params['*'])
       const headers = {"Content-Type": "application/json"};
       const res = await fetch(`${serverOrigin}/api/public/${String(e.params['*']).toLowerCase()}`, {
         method:'GET', headers,}).then((r)=> r.json()).catch((e)=>e);
       return res.success ? res.user : false
-    },
+    }*/,
   },
 ]);
 

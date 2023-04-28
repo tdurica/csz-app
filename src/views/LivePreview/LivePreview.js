@@ -42,7 +42,7 @@ const sxScaler = {
 }
 const Scaler = ({pct, children})=>(<Box sx={sxScaler}>{children}</Box>)
 export default function LivePreview() {
-  const user = useAuth(s=>s.user)
+  // const user = useAuth(s=>s.user)
   const [showPreview, setShowPreview] = useState(false);
   // const tpl = templateDefs.find(v=>v.label===user.template)
   return (<>
@@ -54,7 +54,7 @@ export default function LivePreview() {
     {showPreview && (
       <VFlexCS sx={sxPreviewWrapper} id='preview-wrapper'>
         <Scaler pct={50}>
-          <PublicPage user={user} liveMode={false}/>
+          <PublicPage liveMode={false}/>
         </Scaler>
       </VFlexCS>
     )}

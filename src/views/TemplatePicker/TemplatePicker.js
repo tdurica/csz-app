@@ -21,7 +21,7 @@ export function getBackgroundSx(backgroundSpec){
   }
   if(bgType==='photo'){
     return {
-      bgImage:`url('${bgImage}')`,
+      bgImage:`${bgImage}`,
       bgPosition:'center', bgSize:'cover',
       bgRepeat:'no-repeat'
     }

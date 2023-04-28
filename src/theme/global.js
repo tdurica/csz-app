@@ -75,21 +75,21 @@ export const globalStyles = {
   },
 };
 
-const bgPattern = {
-  ':before': {
-    content: '" "',
-    display: 'block',
-    position: 'absolute',
-    left: '0',
-    top: '0',
-    width: '100%',
-    height: '100%',
-    opacity: '0.06',
-    backgroundImage: import('../assets/pattern-svgs/pattern5.svg'),
-    backgroundRepeat: 'repeat',
-    backgroundPosition: '50%, 50%',
-    backgroundSize: '25%',
-    pointerEvents: 'none',
-  }
-}
+// const bgPattern = {
+//   ':before': {
+//     content: '" "',
+//     display: 'block',
+//     position: 'absolute',
+//     left: '0',
+//     top: '0',
+//     width: '100%',
+//     height: '100%',
+//     opacity: '0.06',
+//     backgroundImage: import('../assets/pattern-svgs/pattern5.svg'),
+//     backgroundRepeat: 'repeat',
+//     backgroundPosition: '50%, 50%',
+//     backgroundSize: '25%',
+//     pointerEvents: 'none',
+//   }
+// }
 

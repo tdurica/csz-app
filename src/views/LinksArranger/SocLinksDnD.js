@@ -124,13 +124,16 @@ export default function SocLinksDnD(){
                         <GridItem area={'eyebin'} as={VFlexCC} gap={1} my={1} justify='space-evenly'>
                           <Button size='xs' variant='outline' color={v.show?'green':'red'} onClick={()=>{
                             let mod = [...items];mod[i] = {...items[i]};mod[i].show = !v.show;
-                            useAuth.getState()._updateUser({socLinks:mod}).catch()
+                            const setVal = !v.show
+                            useAuth.getState()._updatePaths({[`socLinks.${i}.show`]:setVal}).catch()
+
+                            // useAuth.getState()._updateUser({socLinks:mod}).catch()
                           }}><FaRegEye/></Button>
                           <Button size='xs' variant='outline' onClick={()=>{
                             const itemsMod = items.filter((vv,i,a)=>{
                               return vv.label+vv.url !== v.label+v.url
                             });
-                            setItems(itemsMod);
+                            // setItems(itemsMod);
                             useAuth.getState()._updateUser({socLinks:itemsMod}).catch()
                           }}><FaTrash/></Button>
                         </GridItem>

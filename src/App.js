@@ -1,6 +1,7 @@
 import React, {Suspense, useEffect} from 'react';
-import LayoutApp from './views/LayoutApp.js';
+import {Center, Spinner} from "@chakra-ui/react";
 import {createBrowserRouter, Navigate, RouterProvider, redirect} from 'react-router-dom';
+import LayoutApp from './views/LayoutApp.js';
 import AppNav from './views/navs/AppNav.js';
 import PgLanding from './views/PgLanding.js';
 import PgDocs from './views/PgDocs.js';
@@ -15,6 +16,8 @@ import {useScroll} from "framer-motion";
 import {appState} from "./services/useAppStore";
 import {serverOrigin} from "./data/constants";
 import PublicPage from "./views/PublicPage";
+// const LazyPublicPage = React.lazy(() => import('./views/PublicPage'));
+
 // const AppProvider = React.lazy(() =>
 //   import(/* webpackChunkName: "views-app" */ './AppProvider.js')
 // );
@@ -28,20 +31,24 @@ export const publicRoutes = [
 export const publicHandleRoute = [
   '/u',
 ]
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 const router = (isAuthenticated)=>createBrowserRouter([
-  { path: "/u/*",
-    element: <PublicPage liveMode={true}/>,
-    loader: async (e)=> {
-      // console.log(e.params['*'])
-      try {
-        const headers = {"Content-Type": "application/json"};
-        const res = await fetch(`${serverOrigin}/api/public/${String(e.params['*']).toLowerCase()}`, {
-          method:'GET', headers,}).then((r)=> r.json()).catch((e)=>e);
-        if(res.success) {return res.user}else{throw Error('profile not found')}
-      } catch (e){
-        return redirect("/404");
-      }
-    }
+  { path: "/u/*", element: (<PublicPage liveMode={true} />),
+    // loader: async (e)=> {
+    //   // console.log(e.params['*'])
+    //   await sleep(50000);
+    //   try {
+    //     const headers = {"Content-Type": "application/json"};
+    //     const res = await fetch(`${serverOrigin}/api/public/${String(e.params['*']).toLowerCase()}`, {
+    //       method:'GET', headers,}).then((r)=> r.json()).catch((e)=>e);
+    //     if(res.success) {return res.user}else{throw Error('profile not found')}
+    //   } catch (e){
+    //     return redirect("/404");
+    //   }
+    // }
   },
   {
     element: <AppNav />,

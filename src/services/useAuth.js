@@ -6,6 +6,7 @@ import produce from 'immer';
 // import zukeeper from 'zukeeper';
 import jwtDecode from 'jwt-decode';
 import { createBrowserHistory } from 'history';
+import {setPaths} from "../helpers/pathStringUtils";
 const history = createBrowserHistory();
 
 export const userSettingsDefaults={
@@ -31,7 +32,9 @@ export const useAuth = create((set, get) => {
     userSettings: userSettingsDefaults,
     lnpUserInfo: lnpUserInfoDefaults,
     init: async() => {
-      if(window.location.pathname.substring(0,3)==='/u/'){return;}
+      if(window.location.pathname.substring(0,3)==='/u/'){
+        return;
+      }
       // debugger;
       await ls.initSessionStorageSync().then()
       const {accessToken, refreshToken}  = jwt.all()
@@ -180,6 +183,7 @@ export const useAuth = create((set, get) => {
       else{return false;}
 
     },
+
     _logout: async (setLS=true) => {
       //Nullify the token
       _s(s=>{s.user = {} })
@@ -204,16 +208,22 @@ export const useAuth = create((set, get) => {
     _changePW: async (newPassword) => get()._apiCall('auth/changePassword', 'POST', {newPassword}),
     _updateUser: async (updaterObject) => {
       const res = await get()._apiCall('api/profile', 'PUT', updaterObject)
-      if(res && res.user) {
-        _s(s=>{s.user=res.user})
+      if(res && res.success) {
+        const updObjMod = Object.entries(updaterObject).reduce((acc, [k,v])=>{
+          acc[`profile.${k}`] = v; return acc;
+        },{})
+        _s(s=>{
+          setPaths(updaterObject,s.user)
+        })
       }
       return res
     },
     //keynames for updaterObject here are lodash-style path strings to drill into collections
     _updatePaths: async (updaterObject) => {
       const res = await get()._apiCall('api/profile-path', 'PUT', updaterObject)
-      if(res && res.user) {
-        _s(s=>{s.user=res.user})
+      if(res && res.success) {
+        //if res.success, update user object with updaterObject from the func arg - not the response
+        _s(s=>{setPaths(updaterObject,s.user)})
       }
       return res
     },
@@ -226,11 +236,15 @@ export const useAuth = create((set, get) => {
       }
       return res
     },
-    _getPublicPage: async () => {
+    _getUserPublic: async (publicHandle) => {
       __(`fetching user`);
-      const res = await get()._apiCall(`api/public`, 'GET')
+      const headers = {"Content-Type": "application/json"};
+      const res = await fetch(`${serverOrigin}/api/public/${publicHandle.toLowerCase()}`, {
+        method:'GET', headers,}).then((r)=> r.json()).catch((e)=>e);
       console.log(`_getUser:`,res)
-      _s(s=>{s.user = res.user})
+      if(res && res.user){
+        _s(s=>{s.user = res.user})
+      }
       return res
     },
   }

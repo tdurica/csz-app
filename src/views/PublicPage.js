@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 // import { Link } from "react-router-dom";
+import {useLoaderData, useNavigate,useParams } from "react-router-dom";
 import {BtnCopyToClipboard, HFlex, HFlexCC, HFlexSC, TextXs, VFlex, VFlexCC, VFlexCS} from './bits/UtilityTags.js';
 import {
   Box,
@@ -15,7 +16,7 @@ import {
   TabPanels,
   Tabs,
   Portal,
-  Heading, Avatar
+  Heading, Avatar, Spinner
 } from "@chakra-ui/react";
 import {SlSocialInstagram, SlSocialSpotify, SlSocialTwitter} from "react-icons/sl";
 import {TfiEmail} from "react-icons/tfi";
@@ -25,7 +26,7 @@ import CryptoIcon from "../hooks/CryptoIcon/CryptoIcon";
 import TbDesigner from "./TbDesigner";
 import TbSettings from "./TbSettings";
 import {abs0} from "./bits/cssHelpers";
-import {useAuth} from "../services/useAuth";
+import {authState, useAuth} from "../services/useAuth";
 import SocLinkIcon from "../hooks/SocLinkIcon/SocLinkIcon";
 import {templateDefs} from "../data/templateDefs";
 import {TbDotsVertical, TbGridDots, TbGripVertical} from "react-icons/tb";
@@ -33,7 +34,6 @@ import {MdOutlineImageSearch, MdOutlineMarkunreadMailbox} from "react-icons/md";
 import {getBackgroundSx} from "./TemplatePicker/TemplatePicker";
 import {clientOrigin, desktopSidebarWidth} from "../data/constants";
 import {useMutationObservable} from "../hooks/useMutationObservable";
-import {useLoaderData} from "react-router-dom";
 
 function AcctLinks({user, tpl}){
   return user.acctLinks.map((v, i, a) => v.show && (
@@ -117,11 +117,18 @@ function scrollbarVisible(element) {
   return element.scrollHeight > element.clientHeight;
 }
 
-export default function PublicPage({user=false, liveMode=false}) {
-  user = liveMode ? useLoaderData() : user;
-  const tpl = user.template === 'Custom'
-    ? user.customTpl
-    : templateDefs.find(v=>v.label===user.template);
+export default function PublicPage({liveMode=false}) {
+  // user = liveMode ? useLoaderData() : user;
+  const user = useAuth(s=>s.user)
+  const { "*" : publicHandle } = useParams(); // Get the splat parameter
+
+  // const [user, setUser] = useState(useAuth(s=>s.user));
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true);
+  const [tpl, setTpl] = useState({});
+  // const tpl = user.template === 'Custom'
+  //   ? user.customTpl
+  //   : templateDefs.find(v=>v.label===user.template);
   const socLinksColor = user.socLinksColor ?? '#FFFFFF'
   const willShowSocLinks = user.showSocLinks && user.socLinks.length>0;
   const willShowAccts = user.showTabAccs && user.acctLinks.length>0;
@@ -134,19 +141,42 @@ export default function PublicPage({user=false, liveMode=false}) {
   const [passedNsfwWarning, setPassedNsfwWarning] = useState(bypassNsfwWarning);
   const [gridCols, setGridCols] = useState(3);
 
-
   const onAppMainMutation = useCallback((mutationList) => {
     if(scrollbarVisible(scrollableRef.current)){setScrollVis('1');
     }else{setScrollVis('0');}}, [setScrollVis]);
 
   useEffect(()=>{
-    if(tablessMode){ setTabIdx(tablessMode ? 0 : user.showTabNftsAsFirst?1:0); }
+    if(!user.email){return}
+    setTabIdx(tablessMode ? 0 : user.showTabNftsAsFirst?1:0);
+    setTpl(
+      user.template === 'Custom'
+      ? user.customTpl
+      : templateDefs.find(v=>v.label===user.template)
+    )
+    setLoading(false)
   },[user])
 
-  // if(scrollableRef.current){
-    useMutationObservable(scrollableRef.current, onAppMainMutation);
-  // }
+  useEffect(() => {
+    if(liveMode){
+      authState()._getUserPublic(publicHandle).catch()
+    }
+  }, []);
 
+  // if(scrollableRef && scrollableRef.current){
+  //   useMutationObservable(scrollableRef.current, onAppMainMutation);
+  // }
+  useEffect(() => {
+    if (scrollableRef && scrollableRef.current) {
+      useMutationObservable(scrollableRef.current, onAppMainMutation);
+    }
+  }, [scrollableRef, onAppMainMutation]);
+
+  if(loading){ return (
+      <Center w='100vw' h='100vh'>
+        <Spinner />
+      </Center>
+    );
+  }
   return (<>
     {passedNsfwWarning && (
       <Box ref={scrollableRef}
@@ -185,20 +215,16 @@ export default function PublicPage({user=false, liveMode=false}) {
           {willShowSocLinks && (
             <HFlexSC gap={1} fill={socLinksColor}>
               <SocLinks user={user} tpl={tpl}/>
-              {/*<SlSocialInstagram style={{width: '26px', height: '26px'}}/>*/}
-              {/*<SlSocialTwitter style={{width: '26px', height: '26px'}}/>*/}
-              {/*<SlSocialSpotify style={{width: '26px', height: '26px'}}/>*/}
-              {/*<TfiEmail style={{width: '26px', height: '26px'}}/>*/}
             </HFlexSC>
           )}
-          {/*OLD WAY (manually implements "isFitted")*/}
-          {/*<Tabs index={tabIdx} onChange={setTabIdx} sx={{display:'flex', w:'350px', alignItems:'center', flexDirection:'column'}}>*/}
-          {/*  <TabList hidden={!willShowAccts || !willShowNfts} sx={{w:'100%', mb:'10px', justifyContent:'space-evenly'}}>*/}
-          {/*<Tab flexGrow='1' flexBasis='50%' order={tablessMode ? 0 :user.showTabNftsAsFirst?1:0}>Accounts</Tab>*/}
-          {/*<Tab flexGrow='1' flexBasis='50%' order={tablessMode ? 0 :user.showTabNftsAsFirst?0:1}>NFTs</Tab>*/}
-          <Tabs size={tpl.tabsSpec.size || 'md'} colorScheme={tpl.tabsSpec.colorScheme} variant={tpl.tabsSpec.variant} isFitted index={tabIdx} onChange={setTabIdx} sx={{w:'350px'}}>
+          <Tabs index={tabIdx} isFitted onChange={setTabIdx} sx={{w:'350px'}}
+                size={tpl.tabsSpec.size || 'md'}
+                variant={tpl.tabsSpec.variant}
+                colorScheme={tpl.tabsSpec.colorScheme}
+          >
             <TabList hidden={!willShowAccts || !willShowNfts} sx={{mb:'10px'}} color={socLinksColor}>
-              {/* REMINDER: css prop order={} is unrelated to/independent of tabIdx */}
+              {/* REMINDER: css prop order={} is unrelated to/independent of tabIdx, meaning
+               acctsLinks is always tabIdx:0, and nftLinks is always tabIdx:1 */}
               <Tab order={tablessMode ? 0 :user.showTabNftsAsFirst?1:0} color={socLinksColor}>Accounts</Tab>
               <Tab order={tablessMode ? 0 :user.showTabNftsAsFirst?0:1} color={socLinksColor}>NFTs</Tab>
             </TabList>

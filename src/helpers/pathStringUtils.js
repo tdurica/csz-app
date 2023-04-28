@@ -13,7 +13,7 @@ export function setPath(path, entity, value, upsert=true){
     }
     if (obj[part]) {
       //path exists
-      if (index < pathParts.length - 1) {
+      if (i < pathParts.length - 1) {
         obj = obj[part];
       } else {
         obj[part] = value;
@@ -21,7 +21,7 @@ export function setPath(path, entity, value, upsert=true){
     }
     else if(upsert){
       //create path
-      if (index < pathParts.length - 1) {
+      if (i < pathParts.length - 1) {
         obj = obj[part];
       } else {
         obj[part] = value;
